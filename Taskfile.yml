@@ -1,0 +1,29 @@
+# https://taskfile.dev
+
+version: '2'
+
+vars:
+  VER: 1
+  TOOL: pigHosts
+
+env:
+  GO111MODULE: on
+
+tasks:
+  default:
+    cmds:
+      - echo "{{.VER}} {{.TOOL}}"
+  build-mod-vendor:
+    deps: [mod-vendor]
+    cmds:
+      - go build -mod vendor -i -a -o $GOPATH/bin/pigHosts.exe ./cmd/pigHosts.go
+  build:
+    cmds:
+      - go build -mod vendor -i -o $GOPATH/bin/pigHosts.exe ./cmd/pigHosts.go
+  mod-vendor:
+    cmds:
+      - go mod vendor
+  go-env:
+    cmds:
+      - go env
+
