@@ -8,8 +8,11 @@
             "name": "Launch file",
             "type": "go",
             "request": "launch",
-            "mode": "debug",
-            "program": "${file}"
+            "mode": "auto",
+            "trace": "verbose",
+            "program": "${file}",
+            "env": {"GO111MODULE":"on"},
+            "args": [],
         },
         {
             "mode": "auto",
@@ -18,7 +21,7 @@
             "type": "go",
             "request": "launch",
             "program": "${fileDirname}",
-            "env": {},
+            "env": {"GO111MODULE":"on"},
             "args": []
         }
     ]

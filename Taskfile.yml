@@ -27,6 +27,11 @@ tasks:
     cmds:
       - go mod vendor
   go-env:
+    desc: View GO environment
     cmds:
       - go env
+  go-test:
+    desc: Run all tests.
+    cmds:
+      - go test ./cmd/... -v
 
