@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"reflect"
+	"strings"
 
 	"github.com/docopt/docopt-go"
 )
@@ -21,10 +22,10 @@ Options:
 
 	arguments, _ := docopt.Parse(usage, nil, true, "", false)
 	fmt.Printf("%v", reflect.TypeOf(arguments["FILE"]))
+
 }
 
 func cleanString(s string) (string, error) {
-	return "", nil
+	strings.ReplaceAll(s, "127.0.0.1", "")
+	return s, nil
 }
-
-
