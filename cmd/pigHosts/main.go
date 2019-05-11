@@ -28,12 +28,15 @@ Options:
 
 }
 
+// removeLocalHost
 func removeLocalHost(s string) (string, error) {
 	s = strings.ReplaceAll(s, "127.0.0.1", "")
 	s = strings.ReplaceAll(s, "0.0.0.0", "")
 	s = strings.TrimSpace(s)
 	return s, nil
 }
+
+// removeComments
 func removeComments(s string) (string, error) {
 	pos := strings.Index(s, "#")
 	if pos > -1 {
@@ -42,8 +45,10 @@ func removeComments(s string) (string, error) {
 	s = strings.TrimSpace(s)
 	return s, nil
 }
-func getRemoteList(s string) ([]string, error) {
-	resp, err := http.Get(s)
+
+// getRemoteList
+func getRemoteList(url string) ([]string, error) {
+	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println(err.Error())
 		return nil, err
@@ -66,10 +71,19 @@ func getRemoteList(s string) ([]string, error) {
 	}
 
 	r := strings.FieldsFunc(strings.ReplaceAll(string(b), "\r\n", "\n"), f)
-	//r := strings.Split(strings.ReplaceAll(string(b), "\r\n", "\n"), "\n")
-
-	// for i := range r {
-	// 	println(i, r[i])
-	// }
 	return r, nil
+}
+
+func prepareHostsList(urls []string) ([]string, error) {
+	hosts := make([]string, 0)
+	for i := range urls {
+		h, err := getRemoteList(urls[i])
+		if err != nil {
+			fmt.Println(err.Error())
+			return nil, err
+		}
+		hosts = append(hosts, h...)
+	}
+
+	return hosts, nil
 }

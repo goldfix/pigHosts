@@ -91,3 +91,30 @@ func Test_getRemoteList(t *testing.T) {
 		})
 	}
 }
+
+func Test_prepareHostsList(t *testing.T) {
+	type args struct {
+		urls []string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    []string
+		wantErr bool
+	}{
+		{"Test_prepareHostsList_1", args{urls: []string{"https://drive.google.com/uc?authuser=0&id=1BfGJJLtimhoOi9Sm3jYLF6d8XtYBJ5KY&export=download"}},
+			[]string{"127.0.0.1 localhost", "127.0.0.1 localhost.localdomain", "# TEST #  ", "127.0.0.1 local", "255.255.255.255 broadcasthost"}, false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := prepareHostsList(tt.args.urls)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("prepareHostsList() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("prepareHostsList() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
