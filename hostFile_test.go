@@ -1,6 +1,8 @@
 package pighosts
 
-import "testing"
+import (
+	"testing"
+)
 
 func Test_prepareHostFile(t *testing.T) {
 	type args struct {
@@ -26,6 +28,38 @@ func Test_prepareHostFile(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if err := prepareHostFile(tt.args.hosts); (err != nil) != tt.wantErr {
 				t.Errorf("prepareHostFile() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func Test_backupHostFile(t *testing.T) {
+	contentHostFile, _ := readHostFile()
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    int64
+		wantErr bool
+	}{
+		{
+			"Test_backupHostFile",
+			args{s: contentHostFile},
+			10,
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := backupHostFile(tt.args.s)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("backupHostFile() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if got < tt.want {
+				t.Errorf("backupHostFile() = %v, want %v", got, tt.want)
 			}
 		})
 	}

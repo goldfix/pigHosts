@@ -1,6 +1,11 @@
 package pighosts
 
-import "os"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
 
 var headerHostFile = "### pigHosts START ------ ------ ------ ------ ------ ------"
 var footerHostFile = "### pigHosts END   ------ ------ ------ ------ ------ ------"
@@ -32,11 +37,44 @@ func prepareHostFile(hosts map[string]int) error {
 	return nil
 }
 
-func readHostFile() error {
+func readHostFile() (string, error) {
+	result := ""
 	f, err := os.OpenFile("/Windows/System32/drivers/etc/hosts", os.O_RDONLY, 777)
 	if ChkErr(err) {
-		return err
+		return "", err
+	}
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	scanner.Split(bufio.ScanLines)
+	byteRead := 0
+	for scanner.Scan() {
+		byteRead += len(scanner.Bytes())
+		result += scanner.Text()
+		if strings.Index(scanner.Text(), headerHostFile) > -1 {
+			break
+		}
+		fmt.Println(scanner.Text())
 	}
 
-	return nil
+	if ChkErr(err) {
+		return "", err
+	}
+
+	return result, nil
+}
+
+func backupHostFile(s string) (int64, error) {
+	f, err := os.OpenFile("/tmp/bak.txt", os.O_CREATE, 777)
+	if ChkErr(err) {
+		return 0, err
+	}
+	defer f.Close()
+	f.WriteString(s)
+	f.Sync()
+	stat, err := f.Stat()
+	if ChkErr(err) {
+		return 0, err
+	}
+	return stat.Size(), nil
 }
