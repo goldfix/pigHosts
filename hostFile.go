@@ -4,11 +4,12 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strings"
 )
 
-var headerHostFile = "### pigHosts START ------ ------ ------ ------ ------ ------"
-var footerHostFile = "### pigHosts END   ------ ------ ------ ------ ------ ------"
+var headerHostFile = "###--pigHost_START------------------------------------"
+var footerHostFile = "###--pigHosts-END-------------------------------------"
+var hostFile = "/Windows/System32/drivers/etc/hosts"
+var hostFileBak = "/tmp/host.bak"
 
 //prepareHostFile
 func prepareHostFile(hosts map[string]int) error {
@@ -39,33 +40,32 @@ func prepareHostFile(hosts map[string]int) error {
 
 func readHostFile() (string, error) {
 	result := ""
-	f, err := os.OpenFile("/Windows/System32/drivers/etc/hosts", os.O_RDONLY, 777)
+	f, err := os.OpenFile(hostFile, os.O_RDONLY, 777)
 	if ChkErr(err) {
 		return "", err
 	}
 	defer f.Close()
 
 	scanner := bufio.NewScanner(f)
-	scanner.Split(bufio.ScanLines)
+	scanner.Split(bufio.ScanBytes)
 	byteRead := 0
 	for scanner.Scan() {
-		byteRead += len(scanner.Bytes())
-		result += scanner.Text()
-		if strings.Index(scanner.Text(), headerHostFile) > -1 {
-			break
-		}
-		fmt.Println(scanner.Text())
+		//TODO...>
+		z := string(scanner.Bytes())
+		fmt.Printf(string(z))
 	}
 
+	b := make([]byte, byteRead)
+	_, err = f.ReadAt(b, 0)
 	if ChkErr(err) {
 		return "", err
 	}
-
+	result = string(b)
 	return result, nil
 }
 
 func backupHostFile(s string) (int64, error) {
-	f, err := os.OpenFile("/tmp/bak.txt", os.O_CREATE, 777)
+	f, err := os.OpenFile(hostFileBak, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 777)
 	if ChkErr(err) {
 		return 0, err
 	}
