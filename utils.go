@@ -42,7 +42,7 @@ func isSpecificHost(s string) bool {
 }
 
 // removeLocalHost
-func removeLocalHost(s string) (string, error) {
+func removeLocalHost(s string) string {
 
 	if !isSpecificHost(s) {
 		s = strings.ReplaceAll(s, LocalHost, "")
@@ -50,11 +50,11 @@ func removeLocalHost(s string) (string, error) {
 	}
 	s = strings.TrimSpace(s)
 
-	return s, nil
+	return s
 }
 
 // removeComments
-func removeComments(s string) (string, error) {
+func removeComments(s string) string {
 	pos := strings.Index(s, "#")
 	if pos > -1 {
 		s = s[0:pos]
@@ -62,7 +62,7 @@ func removeComments(s string) (string, error) {
 	s = regexp.MustCompile(`\s+`).ReplaceAllString(s, " ")
 	s = strings.TrimSpace(s)
 	s = strings.ToLower(s)
-	return s, nil
+	return s
 }
 
 // getRemoteList
@@ -99,21 +99,20 @@ func prepareHostsList(urls []string) (map[string]int, error) {
 
 	for u := range urls {
 		lstHost, err := getRemoteList(urls[u])
-		if chkErr(err) {
+		if ChkErr(err) {
 			return nil, err
 		}
 
 		for l := range lstHost {
 			hst := lstHost[l]
-			hst, err = removeComments(hst)
-			if chkErr(err) {
-				return nil, err
+			hst = removeComments(hst)
+			if hst == "" {
+				continue
 			}
 			if isSpecificHost(hst) {
-				hst, err = removeLocalHost(hst)
-				if chkErr(err) {
-					return nil, err
-				}
+				hst = removeLocalHost(hst)
+			} else {
+				hst = NonRoutable + " " + hst
 			}
 
 			hosts[hst]++
@@ -122,33 +121,8 @@ func prepareHostsList(urls []string) (map[string]int, error) {
 	return hosts, nil
 }
 
-//prepareHostFile
-func prepareHostFile(hosts map[string]int) ([]string, error) {
-	result := make([]string, 0)
-	for k := range hosts {
-		if k == "" {
-			continue
-		}
-		if strings.Index(k, LocalHost) > -1 || strings.Index(k, NonRoutable) > -1 {
-			continue
-		}
-		if isSpecificHost(k) {
-			result = append(result, k)
-		} else {
-			result = append(result, NonRoutable+" "+k)
-		}
-	}
-	return nil, nil
-}
-
-//writeHostFile
-func writeHostFile() error {
-
-	return nil
-}
-
-//chkErr
-func chkErr(err error) bool {
+// ChkErr check returned error
+func ChkErr(err error) bool {
 	if err != nil {
 		fmt.Println(err.Error())
 		return true
