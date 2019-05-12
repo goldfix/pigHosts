@@ -1,4 +1,4 @@
-package main
+package pighosts
 
 import (
 	"reflect"
@@ -99,11 +99,13 @@ func Test_prepareHostsList(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    []string
+		want    map[string]int
 		wantErr bool
 	}{
-		{"Test_prepareHostsList_1", args{urls: []string{"https://drive.google.com/uc?authuser=0&id=1BfGJJLtimhoOi9Sm3jYLF6d8XtYBJ5KY&export=download"}},
-			[]string{"127.0.0.1 localhost", "127.0.0.1 localhost.localdomain", "# TEST #  ", "127.0.0.1 local", "255.255.255.255 broadcasthost"}, false},
+		{"Test_prepareHostsList_1", args{urls: []string{"https://drive.google.com/uc?authuser=0&id=1BfGJJLtimhoOi9Sm3jYLF6d8XtYBJ5KY&export=download",
+			"https://drive.google.com/uc?authuser=0&id=1-QRZf_ymrWFZ4XgmXTZJrkhqzhdJMphB&export=download"}},
+			map[string]int{"localhost": 2, "localhost.localdomain": 2, "local": 3, "255.255.255.255 broadcasthost": 3},
+			false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -116,5 +118,6 @@ func Test_prepareHostsList(t *testing.T) {
 				t.Errorf("prepareHostsList() = %v, want %v", got, tt.want)
 			}
 		})
+
 	}
 }

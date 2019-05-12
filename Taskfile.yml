@@ -33,5 +33,5 @@ tasks:
   go-test:
     desc: Run all tests.
     cmds:
-      - go test ./cmd/... -v
+      - go test ./... -v
 
