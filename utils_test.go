@@ -49,6 +49,9 @@ func Test_removeComments(t *testing.T) {
 		{"remove_comment_2", args{s: "host.local.it#test"}, "host.local.it", false},
 		{"remove_comment_3", args{s: "#host.local.it"}, "", false},
 		{"remove_comment_4", args{s: "# host.local.it #test"}, "", false},
+		{"remove_comment_space", args{s: "255.255.255.255                      broadcasthost"}, "255.255.255.255 broadcasthost", false},
+		{"remove_comment_tab", args{s: "255.255.255.255		broadcasthost"}, "255.255.255.255 broadcasthost", false},
+		{"remove_comment_tab_upper", args{s: "255.255.255.255		BROADCASTHOST"}, "255.255.255.255 broadcasthost", false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -119,5 +122,36 @@ func Test_prepareHostsList(t *testing.T) {
 			}
 		})
 
+	}
+}
+
+func Test_prepareHostFile(t *testing.T) {
+	h, _ := prepareHostsList([]string{"https://drive.google.com/uc?authuser=0&id=1BfGJJLtimhoOi9Sm3jYLF6d8XtYBJ5KY&export=download",
+		"https://drive.google.com/uc?authuser=0&id=1-QRZf_ymrWFZ4XgmXTZJrkhqzhdJMphB&export=download"})
+	type args struct {
+		hosts map[string]int
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    []string
+		wantErr bool
+	}{
+		{"Test_prepareHostFile",
+			args{hosts: h},
+			nil,
+			false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := prepareHostFile(tt.args.hosts)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("prepareHostFile() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("prepareHostFile() = %v, want %v", got, tt.want)
+			}
+		})
 	}
 }
