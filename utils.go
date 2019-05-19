@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+var NumHostPerLine = 9
+
 // NonRoutable 0.0.0.0
 var NonRoutable = "0.0.0.0"
 
@@ -47,10 +49,10 @@ func removeLocalHost(s string) string {
 	if !isSpecificHost(s) {
 		s = strings.ReplaceAll(s, LocalHost, "")
 		s = strings.ReplaceAll(s, NonRoutable, "")
+		return strings.TrimSpace(s)
 	}
-	s = strings.TrimSpace(s)
+	return ""
 
-	return s
 }
 
 // removeComments
@@ -106,19 +108,28 @@ func prepareHostsList(urls []string) (map[string]int, error) {
 		for l := range lstHost {
 			hst := lstHost[l]
 			hst = removeComments(hst)
+			hst = removeLocalHost(hst)
 			if hst == "" {
 				continue
 			}
-			if isSpecificHost(hst) {
-				hst = removeLocalHost(hst)
-			} else {
-				hst = NonRoutable + " " + hst
-			}
-
 			hosts[hst]++
 		}
 	}
+
 	return hosts, nil
+}
+
+func splitHostPerLine(hosts []string) ([]string, error) {
+	hosts := make([]string, 0)
+
+	for k, v := range hosts {
+
+		for index := 0; index < NumHostPerLine; index++ {
+
+		}
+		hosts
+	}
+	return nil, nil
 }
 
 // ChkErr check returned error

@@ -99,11 +99,15 @@ func Test_prepareHostsList(t *testing.T) {
 				"https://drive.google.com/uc?authuser=0&id=1-QRZf_ymrWFZ4XgmXTZJrkhqzhdJMphB&export=download"},
 			},
 			map[string]int{
-				"127.0.0.1 local":                 3,
-				"127.0.0.1 localhost":             2,
-				"127.0.0.1 localhost.localdomain": 2,
-				"255.255.255.255 broadcasthost":   3,
-				"0.0.0.0 test.test.io":            1},
+				"123date.me":             1,
+				"12place.com":            1,
+				"165a7.v.fwmrm.net":      1,
+				"180searchassistant.com": 1,
+				"188server.com":          1,
+				"1ccbt.com":              1,
+				"1empiredirect.com":      2,
+				"1phads.com":             2,
+				"test.test.io":           1},
 			false},
 	}
 	for _, tt := range tests {
