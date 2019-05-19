@@ -94,8 +94,10 @@ func Test_prepareHostsList(t *testing.T) {
 		wantErr bool
 	}{
 		{"Test_prepareHostsList_1",
-			args{urls: []string{"https://drive.google.com/uc?authuser=0&id=1BfGJJLtimhoOi9Sm3jYLF6d8XtYBJ5KY&export=download",
-				"https://drive.google.com/uc?authuser=0&id=1-QRZf_ymrWFZ4XgmXTZJrkhqzhdJMphB&export=download"}},
+			args{urls: []string{
+				"https://drive.google.com/uc?authuser=0&id=1BfGJJLtimhoOi9Sm3jYLF6d8XtYBJ5KY&export=download",
+				"https://drive.google.com/uc?authuser=0&id=1-QRZf_ymrWFZ4XgmXTZJrkhqzhdJMphB&export=download"},
+			},
 			map[string]int{
 				"127.0.0.1 local":                 3,
 				"127.0.0.1 localhost":             2,
