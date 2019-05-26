@@ -68,24 +68,17 @@ func removeComments(s string) string {
 }
 
 // prepareHostsList
-func prepareHostsList(urls []string) (map[string]int, error) {
+func prepareHostsList(downloadHosts []string) (map[string]int, error) {
 	hosts := make(map[string]int, 0)
 
-	for u := range urls {
-		lstHost, err := downlaodRemoteList(urls[u])
-		if ChkErr(err) {
-			return nil, err
+	for l := range downloadHosts {
+		hst := downloadHosts[l]
+		hst = removeComments(hst)
+		hst = removeLocalHost(hst)
+		if hst == "" {
+			continue
 		}
-
-		for l := range lstHost {
-			hst := lstHost[l]
-			hst = removeComments(hst)
-			hst = removeLocalHost(hst)
-			if hst == "" {
-				continue
-			}
-			hosts[hst]++
-		}
+		hosts[hst]++
 	}
 
 	return hosts, nil

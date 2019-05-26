@@ -85,6 +85,12 @@ func Test_downlaodRemoteList(t *testing.T) {
 }
 
 func Test_prepareHostsList(t *testing.T) {
+	tmpUrls := make([]string, 0)
+	tmpUrl, _ := downlaodRemoteList("https://drive.google.com/uc?authuser=0&id=1-QRZf_ymrWFZ4XgmXTZJrkhqzhdJMphB&export=download")
+	tmpUrls = append(tmpUrls, tmpUrl...)
+	tmpUrl, _ = downlaodRemoteList("https://drive.google.com/uc?authuser=0&id=1BfGJJLtimhoOi9Sm3jYLF6d8XtYBJ5KY&export=download")
+	tmpUrls = append(tmpUrls, tmpUrl...)
+
 	type args struct {
 		urls []string
 	}
@@ -95,10 +101,7 @@ func Test_prepareHostsList(t *testing.T) {
 		wantErr bool
 	}{
 		{"Test_prepareHostsList_1",
-			args{urls: []string{
-				"https://drive.google.com/uc?authuser=0&id=1BfGJJLtimhoOi9Sm3jYLF6d8XtYBJ5KY&export=download",
-				"https://drive.google.com/uc?authuser=0&id=1-QRZf_ymrWFZ4XgmXTZJrkhqzhdJMphB&export=download"},
-			},
+			args{urls: tmpUrls},
 			map[string]int{
 				"123date.me":             1,
 				"12place.com":            1,
