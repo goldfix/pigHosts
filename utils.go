@@ -67,8 +67,32 @@ func removeComments(s string) string {
 	return s
 }
 
+// prepareHostsList
+func prepareHostsList(urls []string) (map[string]int, error) {
+	hosts := make(map[string]int, 0)
+
+	for u := range urls {
+		lstHost, err := downlaodRemoteList(urls[u])
+		if ChkErr(err) {
+			return nil, err
+		}
+
+		for l := range lstHost {
+			hst := lstHost[l]
+			hst = removeComments(hst)
+			hst = removeLocalHost(hst)
+			if hst == "" {
+				continue
+			}
+			hosts[hst]++
+		}
+	}
+
+	return hosts, nil
+}
+
 // getRemoteList
-func getRemoteList(url string) ([]string, error) {
+func downlaodRemoteList(url string) ([]string, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -95,41 +119,27 @@ func getRemoteList(url string) ([]string, error) {
 	return r, nil
 }
 
-// prepareHostsList
-func prepareHostsList(urls []string) (map[string]int, error) {
-	hosts := make(map[string]int, 0)
+func splitHostPerLine(hosts map[string]int) []string {
+	result := make([]string, 0)
 
-	for u := range urls {
-		lstHost, err := getRemoteList(urls[u])
-		if ChkErr(err) {
-			return nil, err
-		}
-
-		for l := range lstHost {
-			hst := lstHost[l]
-			hst = removeComments(hst)
-			hst = removeLocalHost(hst)
-			if hst == "" {
-				continue
-			}
-			hosts[hst]++
+	t := NonRoutable
+	c := 0
+	for v := range hosts {
+		t = t + " " + v
+		c++
+		if c >= NumHostPerLine {
+			result = append(result, t)
+			c = 0
+			t = NonRoutable
 		}
 	}
-
-	return hosts, nil
-}
-
-func splitHostPerLine(hosts []string) ([]string, error) {
-	hosts := make([]string, 0)
-
-	for k, v := range hosts {
-
-		for index := 0; index < NumHostPerLine; index++ {
-
-		}
-		hosts
+	if c > 0 {
+		result = append(result, t)
+		c = 0
+		t = NonRoutable
 	}
-	return nil, nil
+
+	return result
 }
 
 // ChkErr check returned error
