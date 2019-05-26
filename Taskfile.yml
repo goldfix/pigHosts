@@ -36,5 +36,5 @@ tasks:
     desc: Run all tests.
     cmds:
       - go clean -testcache
-      - go test ./...
+      - go test -v ./...
 

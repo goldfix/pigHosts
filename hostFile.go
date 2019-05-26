@@ -2,24 +2,38 @@ package pighosts
 
 import (
 	"bufio"
-	"fmt"
 	"os"
+	"path"
+	"strings"
+	"time"
 )
 
 var headerHostFile = "###--pigHost_START------------------------------------"
-var footerHostFile = "###--pigHosts-END-------------------------------------"
+var footerHostFile = "###--pigHosts_END-------------------------------------"
 var hostFile = "/Windows/System32/drivers/etc/hosts"
-var hostFileBak = "/tmp/host.bak"
+var hostFileBak = "/tmp/pigHostBak/host_" + time.Now().Format("20060201T1504") + ".bak"
+var hostFileNew = "/tmp/pigHostBak/host.new"
 
 //prepareHostFile
 func prepareHostFile(hosts map[string]int) error {
-	header := headerHostFile + "\n\n"
+	header := "\n\n" + headerHostFile
 	footer := "\n\n" + footerHostFile + "\n\n"
-	f, err := os.Create("/tmp/test.txt")
+	f, err := os.Create(hostFileNew)
 	if ChkErr(err) {
 		return err
 	}
-	_, err = f.WriteString(header)
+	defer f.Close()
+
+	origHost, err := readHostFile()
+	if ChkErr(err) {
+		return err
+	}
+	_, err = f.WriteString(origHost)
+	if ChkErr(err) {
+		return err
+	}
+
+	_, err = f.WriteString(header + "\n# Last Update: " + time.Now().Format("2006-02-01 15:04") + "\n\n")
 	if ChkErr(err) {
 		return err
 	}
@@ -34,7 +48,7 @@ func prepareHostFile(hosts map[string]int) error {
 		return err
 	}
 	f.Sync()
-	defer f.Close()
+
 	return nil
 }
 
@@ -48,23 +62,39 @@ func readHostFile() (string, error) {
 
 	scanner := bufio.NewScanner(f)
 	scanner.Split(bufio.ScanBytes)
-	byteRead := 0
+	bytesRead := 0
+	startLine := 0
+
 	for scanner.Scan() {
-		//TODO...>
 		z := string(scanner.Bytes())
-		fmt.Printf(string(z))
+		if z == "\n" || z == "\r" {
+			line := make([]byte, bytesRead-startLine)
+			f.ReadAt(line, int64(startLine))
+			s := string(line)
+			if strings.Index(s, headerHostFile) > -1 {
+				break
+			}
+			startLine = bytesRead + 1
+		}
+		bytesRead++
 	}
 
-	b := make([]byte, byteRead)
-	_, err = f.ReadAt(b, 0)
-	if ChkErr(err) {
-		return "", err
-	}
+	b := make([]byte, startLine)
+	f.ReadAt(b, 0)
 	result = string(b)
 	return result, nil
 }
 
 func backupHostFile(s string) (int64, error) {
+	dir := path.Dir(hostFileBak)
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		err = nil
+		err = os.Mkdir(dir, os.ModeDir)
+		if ChkErr(err) {
+			return 0, err
+		}
+	}
+
 	f, err := os.OpenFile(hostFileBak, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 777)
 	if ChkErr(err) {
 		return 0, err
