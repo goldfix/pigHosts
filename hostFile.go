@@ -18,6 +18,16 @@ var hostFileNew = "/tmp/pigHostBak/host.new"
 func prepareHostFile(hosts map[string]int) error {
 	header := "\n\n" + headerHostFile
 	footer := "\n\n" + footerHostFile + "\n\n"
+
+	dir := path.Dir(hostFileNew)
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		err = nil
+		err = os.Mkdir(dir, os.ModeDir)
+		if ChkErr(err) {
+			return err
+		}
+	}
+
 	f, err := os.Create(hostFileNew)
 	if ChkErr(err) {
 		return err
