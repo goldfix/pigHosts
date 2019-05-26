@@ -87,8 +87,7 @@ func prepareHostsList(downloadHosts []string) (map[string]int, error) {
 // getRemoteList
 func downlaodRemoteList(url string) ([]string, error) {
 	resp, err := http.Get(url)
-	if err != nil {
-		fmt.Println(err.Error())
+	if ChkErr(err) {
 		return nil, err
 	}
 	defer resp.Body.Close()
@@ -99,8 +98,7 @@ func downlaodRemoteList(url string) ([]string, error) {
 	}
 
 	b, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println(err.Error())
+	if ChkErr(err) {
 		return nil, err
 	}
 
