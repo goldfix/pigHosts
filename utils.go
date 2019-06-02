@@ -32,6 +32,18 @@ var SpecificHost = []string{
 	"ff02::2 ip6-allrouters",
 	"ff02::3 ip6-allhosts",
 	"0.0.0.0 0.0.0.0",
+	"localhost",
+	"localhost.localdomain",
+	"local",
+	"broadcasthost",
+	"ip6-localhost",
+	"ip6-loopback",
+	"ip6-localnet",
+	"ip6-mcastprefix",
+	"ip6-allnodes",
+	"ip6-allrouters",
+	"ip6-allhosts",
+	"0.0.0.0",
 }
 
 func isSpecificHost(s string) bool {

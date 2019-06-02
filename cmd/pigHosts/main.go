@@ -19,7 +19,8 @@ Options:
   -h --help
   `
 
-	arguments, _ := docopt.Parse(usage, nil, true, "", false)
+	arguments, _ := docopt.ParseDoc(usage)
+
 	fmt.Printf("%v", reflect.TypeOf(arguments["FILE"]))
 
 }
