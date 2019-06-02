@@ -23,38 +23,38 @@ func prepareHostFile(hosts map[string]int) error {
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		err = nil
 		err = os.Mkdir(dir, os.ModeDir)
-		if ChkErr(err) {
+		if err != nil {
 			return err
 		}
 	}
 
 	f, err := os.Create(hostFileNew)
-	if ChkErr(err) {
+	if err != nil {
 		return err
 	}
 	defer f.Close()
 
 	origHost, err := readHostFile()
-	if ChkErr(err) {
+	if err != nil {
 		return err
 	}
 	_, err = f.WriteString(origHost)
-	if ChkErr(err) {
+	if err != nil {
 		return err
 	}
 
 	_, err = f.WriteString(header + "\n# Last Update: " + time.Now().Format("2006-02-01 15:04") + "\n\n")
-	if ChkErr(err) {
+	if err != nil {
 		return err
 	}
 	for k := range hosts {
 		_, err := f.WriteString(k + "\n")
-		if ChkErr(err) {
+		if err != nil {
 			return err
 		}
 	}
 	_, err = f.WriteString(footer)
-	if ChkErr(err) {
+	if err != nil {
 		return err
 	}
 	f.Sync()
@@ -65,7 +65,7 @@ func prepareHostFile(hosts map[string]int) error {
 func readHostFile() (string, error) {
 	result := ""
 	f, err := os.OpenFile(hostFile, os.O_RDONLY, 777)
-	if ChkErr(err) {
+	if err != nil {
 		return "", err
 	}
 	defer f.Close()
@@ -100,20 +100,20 @@ func backupHostFile(s string) (int64, error) {
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		err = nil
 		err = os.Mkdir(dir, os.ModeDir)
-		if ChkErr(err) {
+		if err != nil {
 			return 0, err
 		}
 	}
 
 	f, err := os.OpenFile(hostFileBak, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 777)
-	if ChkErr(err) {
+	if err != nil {
 		return 0, err
 	}
 	defer f.Close()
 	f.WriteString(s)
 	f.Sync()
 	stat, err := f.Stat()
-	if ChkErr(err) {
+	if err != nil {
 		return 0, err
 	}
 	return stat.Size(), nil
