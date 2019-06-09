@@ -31,13 +31,13 @@ Options:
  -o, --other   Other params
 
 Command:
- version    view version
- unload     disable custom hosts
- load       load custom hosts from exsternal urls file 
- help				view online help
+ version       view version
+ unload        disable custom hosts
+ load          load custom hosts from exsternal urls file 
+ help          view online help
 
 Arguments:
- file				File to process`
+ file          file to process`
 
 	arguments, err := docopt.ParseDoc(usage)
 	ChkErr(err)
