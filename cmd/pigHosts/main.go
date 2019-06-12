@@ -32,7 +32,7 @@ Options:
 
 Command:
  version       view version
- unload        disable custom hosts
+ unload        disable and remove custom hosts
  load          load custom hosts from exsternal urls file 
  help          view online help
 
@@ -60,13 +60,15 @@ Arguments:
 	err = fmt.Errorf("My Err: %v", "super error!")
 
 	ChkErr(err)
-
+	os.Exit(0)
 }
 
 // ChkErr check returned error
 func ChkErr(err error) {
 	if err != nil {
-		logrus.WithFields(logrus.Fields{"Stack": string(debug.Stack()), "Verion": VERSION}).Error(err)
+		logrus.Error(err)
+		logrus.Errorf("Verion: %s", VERSION)
+		logrus.Errorf("Stack : %s", string(debug.Stack()))
 		os.Exit(1)
 	}
 }
