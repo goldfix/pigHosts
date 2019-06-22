@@ -27,7 +27,8 @@ Options:
 Command:
  unload         disable and remove custom hosts
  load           load custom hosts from exsternal urls file 
- force_init     delete and create a new set of configuration files: '.pigHosts/pigHosts.excluded' and '.pigHosts/pigHosts.urls' in your user/home folder
+ force_init     delete and create a new set of configuration files:
+                '.pigHosts/pigHosts.excluded' and '.pigHosts/pigHosts.urls' in your user/home folder
 
 Arguments:
  file          file to process
