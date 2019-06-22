@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"regexp"
 	"strings"
 )
@@ -62,7 +63,6 @@ func isSpecificHost(s string) bool {
 	return false
 }
 
-// removeLocalHost
 func removeLocalHost(s string) string {
 
 	if !isSpecificHost(s) {
@@ -74,7 +74,6 @@ func removeLocalHost(s string) string {
 
 }
 
-// removeComments
 func removeComments(s string) string {
 	pos := strings.Index(s, "#")
 	if pos > -1 {
@@ -103,7 +102,6 @@ func prepareHostsList(downloadHosts []string) (map[string]int, error) {
 	return hosts, nil
 }
 
-// getRemoteList
 func downlaodRemoteList(url string) ([]string, error) {
 	resp, err := http.Get(url)
 	if err != nil {
@@ -150,4 +148,13 @@ func splitHostPerLine(hosts map[string]int) []string {
 	}
 
 	return result
+}
+
+func initConf() error {
+	s, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
