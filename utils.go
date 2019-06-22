@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"regexp"
 	"strings"
 )
@@ -148,13 +147,4 @@ func splitHostPerLine(hosts map[string]int) []string {
 	}
 
 	return result
-}
-
-func initConf() error {
-	s, err := os.UserHomeDir()
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
