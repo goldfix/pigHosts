@@ -2,24 +2,115 @@ package main
 
 import (
 	"fmt"
-	"reflect"
+	"os"
+	pighosts "pigHosts"
+	"runtime/debug"
 
 	"github.com/docopt/docopt-go"
+	"github.com/sirupsen/logrus"
 )
 
+var VERSION string = "0.1"
+
+func init() {
+	logrus.SetFormatter(&logrus.TextFormatter{DisableTimestamp: true, ForceColors: true, DisableLevelTruncation: true})
+	logrus.SetOutput(os.Stdout)
+	logrus.SetLevel(logrus.InfoLevel)
+
+	pighosts.InitPigHosts(false)
+}
+
 func main() {
-	usage := `
-  Usage: arguments_example [-vqrh] [FILE] ...
-    arguments_example (--left | --right) CORRECTION FILE
-Process FILE and optionally apply correction to either left-hand side or
-  right-hand side.
-Arguments:
-  FILE        File to process
+	usage := `pigHost
+
+Usage: pigHost [load | unload | force_init] [-h | -v | -o] [<file>]
+ pigHost (load <file>)
+ pigHost (unload)
+ pigHost (force_init)
+ pigHost (--help | -h)
+ pigHost (--version | -v)
+
 Options:
-  -h --help
-  `
+ -h, --help     help online
+ -o, --other    other params
+ -v, --version  view version
 
-	arguments, _ := docopt.Parse(usage, nil, true, "", false)
-	fmt.Printf("%v", reflect.TypeOf(arguments["FILE"]))
+Command:
+ unload         disable and remove custom hosts
+ load           load custom hosts from exsternal urls file 
+ force_init     delete and create a new set of configuration files: '.pigHosts/pigHosts.excluded' and '.pigHosts/pigHosts.urls' in your user/home folder
 
+Arguments:
+ file          file to process`
+
+	arguments, err := docopt.ParseDoc(usage)
+	ChkErr(err)
+	//logrus.Infoln(arguments)
+
+	r, err := arguments.Bool("--help")
+	ChkErr(err)
+	if r {
+		docopt.PrintHelpAndExit(err, usage)
+		os.Exit(0)
+	}
+
+	r, err = arguments.Bool("--version")
+	ChkErr(err)
+	if r {
+		logrus.Infof("VERSION: %s", VERSION)
+		os.Exit(0)
+	}
+
+	pighosts.InitPigHosts(false)
+	r, err = arguments.Bool("force_init")
+	ChkErr(err)
+	if r {
+		pighosts.InitPigHosts(true)
+		logrus.Infoln("Created configuration file:\n\t" + pighosts.PigHostsExcluded + "\n\t" + pighosts.PigHostsUrls)
+		os.Exit(0)
+	}
+
+	r, err = arguments.Bool("unload")
+	ChkErr(err)
+	if r {
+		logrus.Warningln("WIP :: functionality not implemented.")
+		os.Exit(1)
+
+		pighosts.PrepareHostFile(nil)
+		os.Exit(0)
+	}
+
+	r, err = arguments.Bool("load")
+	ChkErr(err)
+	if r {
+		logrus.Warningln("WIP :: functionality not implemented.")
+		os.Exit(1)
+
+		if arguments["<file>"] == nil {
+			logrus.Warningln("Missing 'file' parameter")
+			os.Exit(1)
+		}
+		file, err := arguments.String("<file>")
+		ChkErr(err)
+
+		logrus.Infoln("<file>: " + file)
+
+		os.Exit(0)
+	}
+	docopt.PrintHelpAndExit(err, usage)
+
+	err = fmt.Errorf("My Err: %v", "super error!")
+	ChkErr(err)
+
+	os.Exit(0)
+}
+
+// ChkErr check returned error
+func ChkErr(err error) {
+	if err != nil {
+		logrus.Error(err)
+		logrus.Errorf("Verion: %s", VERSION)
+		logrus.Errorf("Stack : %s", string(debug.Stack()))
+		os.Exit(1)
+	}
 }

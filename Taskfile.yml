@@ -11,8 +11,10 @@ env:
 
 tasks:
   default:
+    silent: true
     cmds:
-      - echo "{{.VER}} {{.TOOL}}"
+      - echo 'Tool -> {{.TOOL}}'
+      - task --list      
   build-mod-vendor:
     desc: Download modules and force a build of project using vendor folder.
     deps: [mod-vendor]

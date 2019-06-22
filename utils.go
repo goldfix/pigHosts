@@ -8,16 +8,16 @@ import (
 	"strings"
 )
 
-var NumHostPerLine = 9
+var numHostPerLine = 9
 
 // NonRoutable 0.0.0.0
-var NonRoutable = "0.0.0.0"
+var nonRoutable = "0.0.0.0"
 
 // LocalHost 127.0.0.1
-var LocalHost = "127.0.0.1"
+var localHost = "127.0.0.1"
 
 // SpecificHost
-var SpecificHost = []string{
+var specificHost = []string{
 	"127.0.0.1 localhost",
 	"127.0.0.1 localhost.localdomain",
 	"127.0.0.1 local",
@@ -32,30 +32,47 @@ var SpecificHost = []string{
 	"ff02::2 ip6-allrouters",
 	"ff02::3 ip6-allhosts",
 	"0.0.0.0 0.0.0.0",
+	"localhost",
+	"localhost.localdomain",
+	"local",
+	"broadcasthost",
+	"ip6-localhost",
+	"ip6-loopback",
+	"ip6-localnet",
+	"ip6-mcastprefix",
+	"ip6-allnodes",
+	"ip6-allrouters",
+	"ip6-allhosts",
+	"0.0.0.0",
+}
+
+// SpecificHost
+var defaultHostsUrls = []string{
+	"https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
+	"https://www.squidblacklist.org/downloads/dg-ads.acl",
+	"https://www.squidblacklist.org/downloads/dg-malicious.acl",
 }
 
 func isSpecificHost(s string) bool {
-	for i := range SpecificHost {
-		if SpecificHost[i] == s {
+	for i := range specificHost {
+		if specificHost[i] == s {
 			return true
 		}
 	}
 	return false
 }
 
-// removeLocalHost
 func removeLocalHost(s string) string {
 
 	if !isSpecificHost(s) {
-		s = strings.ReplaceAll(s, LocalHost, "")
-		s = strings.ReplaceAll(s, NonRoutable, "")
+		s = strings.ReplaceAll(s, localHost, "")
+		s = strings.ReplaceAll(s, nonRoutable, "")
 		return strings.TrimSpace(s)
 	}
 	return ""
 
 }
 
-// removeComments
 func removeComments(s string) string {
 	pos := strings.Index(s, "#")
 	if pos > -1 {
@@ -84,10 +101,9 @@ func prepareHostsList(downloadHosts []string) (map[string]int, error) {
 	return hosts, nil
 }
 
-// getRemoteList
 func downlaodRemoteList(url string) ([]string, error) {
 	resp, err := http.Get(url)
-	if ChkErr(err) {
+	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
@@ -98,7 +114,7 @@ func downlaodRemoteList(url string) ([]string, error) {
 	}
 
 	b, err := ioutil.ReadAll(resp.Body)
-	if ChkErr(err) {
+	if err != nil {
 		return nil, err
 	}
 
@@ -113,31 +129,22 @@ func downlaodRemoteList(url string) ([]string, error) {
 func splitHostPerLine(hosts map[string]int) []string {
 	result := make([]string, 0)
 
-	t := NonRoutable
+	t := nonRoutable
 	c := 0
 	for v := range hosts {
 		t = t + " " + v
 		c++
-		if c >= NumHostPerLine {
+		if c >= numHostPerLine {
 			result = append(result, t)
 			c = 0
-			t = NonRoutable
+			t = nonRoutable
 		}
 	}
 	if c > 0 {
 		result = append(result, t)
 		c = 0
-		t = NonRoutable
+		t = nonRoutable
 	}
 
 	return result
-}
-
-// ChkErr check returned error
-func ChkErr(err error) bool {
-	if err != nil {
-		fmt.Println(err.Error())
-		return true
-	}
-	return false
 }

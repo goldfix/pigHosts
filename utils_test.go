@@ -46,6 +46,7 @@ func Test_removeLocalHost(t *testing.T) {
 		{"remove: 0.0.0.0", args{s: "0.0.0.0 host.local.it"}, "host.local.it"},
 		{"remove: 0.0.0.0 with spaces", args{s: "0.0.0.0     host.local.it"}, "host.local.it"},
 		{"remove: 0.0.0.0 with spaces 2", args{s: "          0.0.0.0     host.local.it           "}, "host.local.it"},
+		{"remove: 0.0.0.0 with localhost", args{s: "localhost"}, ""},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
