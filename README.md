@@ -16,7 +16,6 @@ Usage: pigHost [load | unload | force_init] [-h | -v | -o] [<file>]
  pigHost (unload)
  pigHost (force_init)
  pigHost (--help | -h)
- pigHost (--other | -o)
  pigHost (--version | -v)
 
 Options:

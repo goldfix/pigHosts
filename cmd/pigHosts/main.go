@@ -10,7 +10,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var VERSION string = "1.0"
+var VERSION string = "0.1"
 
 func init() {
 	logrus.SetFormatter(&logrus.TextFormatter{DisableTimestamp: true, ForceColors: true, DisableLevelTruncation: true})
@@ -28,7 +28,6 @@ Usage: pigHost [load | unload | force_init] [-h | -v | -o] [<file>]
  pigHost (unload)
  pigHost (force_init)
  pigHost (--help | -h)
- pigHost (--other | -o)
  pigHost (--version | -v)
 
 Options:
@@ -74,6 +73,9 @@ Arguments:
 	r, err = arguments.Bool("unload")
 	ChkErr(err)
 	if r {
+		logrus.Warningln("WIP :: functionality not implemented.")
+		os.Exit(1)
+
 		pighosts.PrepareHostFile(nil)
 		os.Exit(0)
 	}
@@ -81,6 +83,9 @@ Arguments:
 	r, err = arguments.Bool("load")
 	ChkErr(err)
 	if r {
+		logrus.Warningln("WIP :: functionality not implemented.")
+		os.Exit(1)
+
 		if arguments["<file>"] == nil {
 			logrus.Warningln("Missing 'file' parameter")
 			os.Exit(1)
