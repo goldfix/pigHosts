@@ -8,16 +8,16 @@ import (
 	"strings"
 )
 
-var NumHostPerLine = 9
+var numHostPerLine = 9
 
 // NonRoutable 0.0.0.0
-var NonRoutable = "0.0.0.0"
+var nonRoutable = "0.0.0.0"
 
 // LocalHost 127.0.0.1
-var LocalHost = "127.0.0.1"
+var localHost = "127.0.0.1"
 
 // SpecificHost
-var SpecificHost = []string{
+var specificHost = []string{
 	"127.0.0.1 localhost",
 	"127.0.0.1 localhost.localdomain",
 	"127.0.0.1 local",
@@ -46,9 +46,16 @@ var SpecificHost = []string{
 	"0.0.0.0",
 }
 
+// SpecificHost
+var defaultHostsUrls = []string{
+	"https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
+	"https://www.squidblacklist.org/downloads/dg-ads.acl",
+	"https://www.squidblacklist.org/downloads/dg-malicious.acl",
+}
+
 func isSpecificHost(s string) bool {
-	for i := range SpecificHost {
-		if SpecificHost[i] == s {
+	for i := range specificHost {
+		if specificHost[i] == s {
 			return true
 		}
 	}
@@ -59,8 +66,8 @@ func isSpecificHost(s string) bool {
 func removeLocalHost(s string) string {
 
 	if !isSpecificHost(s) {
-		s = strings.ReplaceAll(s, LocalHost, "")
-		s = strings.ReplaceAll(s, NonRoutable, "")
+		s = strings.ReplaceAll(s, localHost, "")
+		s = strings.ReplaceAll(s, nonRoutable, "")
 		return strings.TrimSpace(s)
 	}
 	return ""
@@ -125,21 +132,21 @@ func downlaodRemoteList(url string) ([]string, error) {
 func splitHostPerLine(hosts map[string]int) []string {
 	result := make([]string, 0)
 
-	t := NonRoutable
+	t := nonRoutable
 	c := 0
 	for v := range hosts {
 		t = t + " " + v
 		c++
-		if c >= NumHostPerLine {
+		if c >= numHostPerLine {
 			result = append(result, t)
 			c = 0
-			t = NonRoutable
+			t = nonRoutable
 		}
 	}
 	if c > 0 {
 		result = append(result, t)
 		c = 0
-		t = NonRoutable
+		t = nonRoutable
 	}
 
 	return result
