@@ -23,10 +23,11 @@ func Test_prepareHostFile(t *testing.T) {
 				"0.0.0.0 test.test.io":            1},
 			},
 			false},
+		{"Test_prepareHostFile Unload", args{hosts: nil}, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := prepareHostFile(tt.args.hosts); (err != nil) != tt.wantErr {
+			if err := PrepareHostFile(tt.args.hosts); (err != nil) != tt.wantErr {
 				t.Errorf("prepareHostFile() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -60,6 +61,30 @@ func Test_backupHostFile(t *testing.T) {
 			}
 			if got < tt.want {
 				t.Errorf("backupHostFile() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestInitPigHosts(t *testing.T) {
+	type args struct {
+		force bool
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			"TestInitPigHosts",
+			args{force: true},
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := InitPigHosts(tt.args.force); (err != nil) != tt.wantErr {
+				t.Errorf("InitPigHosts() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
