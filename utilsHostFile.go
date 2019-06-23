@@ -8,16 +8,14 @@ import (
 	"time"
 )
 
-var headerHostFile = "###--pigHost_START------------------------------------"
-var footerHostFile = "###--pigHosts_END-------------------------------------"
-var hostFile = "/Windows/System32/drivers/etc/hosts"
-var hostFileBak = "/tmp/pigHostBak/host_" + time.Now().Format("20060201T1504") + ".bak"
-var hostFileNew = "/tmp/pigHostBak/host.new"
-var hostFileEmpty = "/tmp/pigHostBak/host.empty"
+const headerHostFile = "###--pigHost_START------------------------------------"
+const footerHostFile = "###--pigHosts_END-------------------------------------"
 
-var HomeFolder = ""
-var PigHostsUrls = ""
-var PigHostsExcluded = ""
+const hostFile = "/Windows/System32/drivers/etc/hosts"
+const hostFileNew = "/tmp/pigHostBak/host.new"
+const hostFileEmpty = "/tmp/pigHostBak/host.empty"
+
+var hostFileBak = "/tmp/pigHostBak/host_" + time.Now().Format("20060201T1504") + ".bak"
 
 func InitPigHosts(force bool) error {
 	HomeFolder, err := os.UserHomeDir()
