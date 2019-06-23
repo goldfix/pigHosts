@@ -6,6 +6,11 @@ import (
 	"testing"
 )
 
+func init() {
+	InitPigHosts(true)
+	ReadFileConf()
+}
+
 func Test_removeComments(t *testing.T) {
 	type args struct {
 		s string
@@ -86,6 +91,7 @@ func Test_downlaodRemoteList(t *testing.T) {
 }
 
 func Test_prepareHostsList(t *testing.T) {
+
 	tmpUrls := make([]string, 0)
 	tmpUrl, _ := downlaodRemoteList("https://drive.google.com/uc?authuser=0&id=1-QRZf_ymrWFZ4XgmXTZJrkhqzhdJMphB&export=download")
 	tmpUrls = append(tmpUrls, tmpUrl...)

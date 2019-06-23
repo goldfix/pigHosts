@@ -4,6 +4,11 @@ import (
 	"testing"
 )
 
+func init() {
+	InitPigHosts(true)
+	ReadFileConf()
+}
+
 func Test_prepareHostFile(t *testing.T) {
 	type args struct {
 		hosts map[string]int
