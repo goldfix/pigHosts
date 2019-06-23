@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Launch file",
             "type": "go",
@@ -32,7 +33,7 @@
             "request": "launch",
             "program": "${fileDirname}",
             "env": {"GO111MODULE":"on"},
-            "args": ["load","testFile",]
+            "args": ["force_init",]
         }
     ]
 }

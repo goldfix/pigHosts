@@ -9,8 +9,8 @@ import (
 )
 
 func isSpecificHost(s string) bool {
-	for i := range specificHost {
-		if specificHost[i] == s {
+	for i := range filterSpecificHostTmp {
+		if filterSpecificHostTmp[i] == s {
 			return true
 		}
 	}

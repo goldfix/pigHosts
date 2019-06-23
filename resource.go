@@ -1,6 +1,5 @@
 package pighosts
 
-var HomeFolder = ""
 var PigHostsUrls = ""
 var PigHostsExcluded = ""
 
@@ -9,7 +8,7 @@ const numHostPerLine = 9
 const nonRoutable = "0.0.0.0"
 const localHost = "127.0.0.1"
 
-var specificHost = []string{
+var filterSpecificHostDefault = []string{
 	"127.0.0.1 localhost",
 	"127.0.0.1 localhost.localdomain",
 	"127.0.0.1 local",
@@ -38,8 +37,11 @@ var specificHost = []string{
 	"0.0.0.0",
 }
 
-var defaultHostsUrls = []string{
+var defaultHostsUrlsDefault = []string{
 	"https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
 	"https://www.squidblacklist.org/downloads/dg-ads.acl",
 	"https://www.squidblacklist.org/downloads/dg-malicious.acl",
 }
+
+var defaultHostsUrlsTmp = []string{}
+var filterSpecificHostTmp = []string{}

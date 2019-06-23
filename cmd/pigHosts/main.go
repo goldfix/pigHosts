@@ -10,7 +10,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var VERSION string = "0.1"
+const VERSION string = "0.1"
 
 func init() {
 	logrus.SetFormatter(&logrus.TextFormatter{DisableTimestamp: true, ForceColors: true, DisableLevelTruncation: true})
@@ -18,6 +18,7 @@ func init() {
 	logrus.SetLevel(logrus.InfoLevel)
 
 	pighosts.InitPigHosts(false)
+	pighosts.ReadFileConf()
 }
 
 func main() {

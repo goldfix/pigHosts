@@ -2,6 +2,7 @@ package pighosts
 
 import (
 	"bufio"
+	"io/ioutil"
 	"os"
 	"path"
 	"strings"
@@ -17,15 +18,30 @@ const hostFileEmpty = "/tmp/pigHostBak/host.empty"
 
 var hostFileBak = "/tmp/pigHostBak/host_" + time.Now().Format("20060201T1504") + ".bak"
 
+func ReadFileConf() error {
+	f, err := ioutil.ReadFile(PigHostsUrls)
+	if err != nil {
+		return err
+	}
+	defaultHostsUrlsTmp = strings.Split(string(f), "\n")
+
+	f, err = ioutil.ReadFile(PigHostsExcluded)
+	if err != nil {
+		return err
+	}
+	filterSpecificHostTmp = strings.Split(string(f), "\n")
+	return nil
+}
+
 func InitPigHosts(force bool) error {
-	HomeFolder, err := os.UserHomeDir()
+	homeFolder, err := os.UserHomeDir()
 	if err != nil {
 		return err
 	}
 
-	HomeFolder = HomeFolder + "/.pigHosts"
-	PigHostsUrls = HomeFolder + "/pigHosts.urls"
-	PigHostsExcluded = HomeFolder + "/pigHosts.excluded"
+	homeFolder = homeFolder + "/.pigHosts"
+	PigHostsUrls = homeFolder + "/pigHosts.urls"
+	PigHostsExcluded = homeFolder + "/pigHosts.excluded"
 
 	pigHostsExcludedExist := true && !force
 	pigHostsUrlsExist := true && !force
@@ -38,9 +54,9 @@ func InitPigHosts(force bool) error {
 		pigHostsExcludedExist = false
 	}
 
-	if _, err := os.Stat(HomeFolder); os.IsNotExist(err) {
+	if _, err := os.Stat(homeFolder); os.IsNotExist(err) {
 		err = nil
-		err = os.Mkdir(HomeFolder, os.ModeDir)
+		err = os.Mkdir(homeFolder, os.ModeDir)
 		if err != nil {
 			return err
 		}
@@ -55,8 +71,8 @@ func InitPigHosts(force bool) error {
 		defer f1.Sync()
 		defer f1.Close()
 
-		for i := range defaultHostsUrls {
-			_, err := f1.WriteString(defaultHostsUrls[i] + "\n")
+		for i := range defaultHostsUrlsDefault {
+			_, err := f1.WriteString(defaultHostsUrlsDefault[i] + "\n")
 			if err != nil {
 				return err
 			}
@@ -71,8 +87,8 @@ func InitPigHosts(force bool) error {
 		defer f2.Sync()
 		defer f2.Close()
 
-		for i := range specificHost {
-			_, err := f2.WriteString(specificHost[i] + "\n")
+		for i := range filterSpecificHostDefault {
+			_, err := f2.WriteString(filterSpecificHostDefault[i] + "\n")
 			if err != nil {
 				return err
 			}
@@ -82,7 +98,6 @@ func InitPigHosts(force bool) error {
 	return nil
 }
 
-//prepareHostFile
 func PrepareHostFile(hosts map[string]int) error {
 	header := "\n\n" + headerHostFile
 	footer := "\n\n" + footerHostFile + "\n\n"
