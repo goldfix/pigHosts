@@ -74,18 +74,15 @@ Arguments:
 	r, err = arguments.Bool("unload")
 	ChkErr(err)
 	if r {
-		//logrus.Warningln("WIP :: functionality not implemented.")
-		//os.Exit(1)
+		//TODO :: -->
 
-		pighosts.PrepareHostFile(nil)
 		os.Exit(0)
 	}
 
 	r, err = arguments.Bool("load")
 	ChkErr(err)
 	if r {
-		//logrus.Warningln("WIP :: functionality not implemented.")
-		//os.Exit(1)
+		//TODO :: -->
 
 		if arguments["<file>"] == nil {
 			logrus.Warningln("Missing 'file' parameter")

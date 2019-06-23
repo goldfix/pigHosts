@@ -2,7 +2,9 @@ package pighosts
 
 import (
 	"bufio"
+	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"path"
 	"strings"
@@ -98,7 +100,37 @@ func InitPigHosts(force bool) error {
 	return nil
 }
 
-func PrepareHostFile(hosts map[string]int) error {
+func LoadHostsFile() error {
+
+	return nil
+}
+
+func downlaodRemoteList(url string) ([]string, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		err = fmt.Errorf("Status different 200 (%s, %d)", resp.Status, resp.StatusCode)
+		return nil, err
+	}
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	f := func(c rune) bool {
+		return c == '\n'
+	}
+
+	r := strings.FieldsFunc(strings.ReplaceAll(string(b), "\r\n", "\n"), f)
+	return r, nil
+}
+
+func prepareHostFile(hosts map[string]int) error {
 	header := "\n\n" + headerHostFile
 	footer := "\n\n" + footerHostFile + "\n\n"
 
