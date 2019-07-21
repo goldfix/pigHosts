@@ -1,5 +1,7 @@
 package pighosts
 
+import "time"
+
 var pigHostsUrls = ""
 var pigHostsExcluded = ""
 
@@ -45,3 +47,12 @@ var defaultHostsUrlsDefault = []string{
 
 var defaultHostsUrlsTmp = []string{}
 var filterSpecificHostTmp = []string{}
+
+const headerHostFile = "###--pigHost_START------------------------------------"
+const footerHostFile = "###--pigHosts_END-------------------------------------"
+
+const hostFile = "/Windows/System32/drivers/etc/hosts"
+const hostFileNew = "/tmp/pigHostBak/host.new"
+const hostFileEmpty = "/tmp/pigHostBak/host.empty"
+
+var hostFileBak = "/tmp/pigHostBak/host_" + time.Now().Format("20060201T1504") + ".bak"
