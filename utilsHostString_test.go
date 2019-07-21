@@ -6,6 +6,11 @@ import (
 	"testing"
 )
 
+func init() {
+	InitPigHosts(true)
+	ReadFileConf()
+}
+
 func Test_removeComments(t *testing.T) {
 	type args struct {
 		s string
@@ -57,35 +62,8 @@ func Test_removeLocalHost(t *testing.T) {
 	}
 }
 
-func Test_downlaodRemoteList(t *testing.T) {
-	type args struct {
-		s string
-	}
-	tests := []struct {
-		name    string
-		args    args
-		want    []string
-		wantErr bool
-	}{
-
-		{"Test_downlaodRemoteList_1", args{s: "https://drive.google.com/uc?authuser=0&id=1BfGJJLtimhoOi9Sm3jYLF6d8XtYBJ5KY&export=download"},
-			[]string{"127.0.0.1 localhost", "127.0.0.1 localhost.localdomain", "# TEST #  ", "127.0.0.1 local", "255.255.255.255 broadcasthost", "     test.test.io     "}, false},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := downlaodRemoteList(tt.args.s)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("downlaodRemoteList() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("downlaodRemoteList() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func Test_prepareHostsList(t *testing.T) {
+
 	tmpUrls := make([]string, 0)
 	tmpUrl, _ := downlaodRemoteList("https://drive.google.com/uc?authuser=0&id=1-QRZf_ymrWFZ4XgmXTZJrkhqzhdJMphB&export=download")
 	tmpUrls = append(tmpUrls, tmpUrl...)

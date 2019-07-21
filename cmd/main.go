@@ -10,7 +10,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var VERSION string = "0.1"
+const VERSION string = "0.2"
 
 func init() {
 	logrus.SetFormatter(&logrus.TextFormatter{DisableTimestamp: true, ForceColors: true, DisableLevelTruncation: true})
@@ -18,13 +18,14 @@ func init() {
 	logrus.SetLevel(logrus.InfoLevel)
 
 	pighosts.InitPigHosts(false)
+	pighosts.ReadFileConf()
 }
 
 func main() {
 	usage := `pigHost
 
-Usage: pigHost [load | unload | force_init] [-h | -v | -o] [<file>]
- pigHost (load <file>)
+Usage: pigHost [load | unload | force_init] [-h | -v | -o]
+ pigHost (load)
  pigHost (unload)
  pigHost (force_init)
  pigHost (--help | -h)
@@ -37,11 +38,8 @@ Options:
 
 Command:
  unload         disable and remove custom hosts
- load           load custom hosts from exsternal urls file 
- force_init     delete and create a new set of configuration files: '.pigHosts/pigHosts.excluded' and '.pigHosts/pigHosts.urls' in your user/home folder
-
-Arguments:
- file          file to process`
+ load           load custom hosts from external urls file (if file is not declared pigHost uses /HOME_FOLDER/.pigHosts/pigHosts.urls)
+ force_init     delete and create a new set of configuration files: '.pigHosts/pigHosts.excluded' and '.pigHosts/pigHosts.urls' in your user/home folder`
 
 	arguments, err := docopt.ParseDoc(usage)
 	ChkErr(err)
@@ -61,40 +59,26 @@ Arguments:
 		os.Exit(0)
 	}
 
-	pighosts.InitPigHosts(false)
 	r, err = arguments.Bool("force_init")
 	ChkErr(err)
 	if r {
 		pighosts.InitPigHosts(true)
-		logrus.Infoln("Created configuration file:\n\t" + pighosts.PigHostsExcluded + "\n\t" + pighosts.PigHostsUrls)
 		os.Exit(0)
 	}
 
 	r, err = arguments.Bool("unload")
 	ChkErr(err)
 	if r {
-		logrus.Warningln("WIP :: functionality not implemented.")
-		os.Exit(1)
-
-		pighosts.PrepareHostFile(nil)
+		// err := pighosts.UnloadHostsFile()
+		// ChkErr(err)
 		os.Exit(0)
 	}
 
 	r, err = arguments.Bool("load")
 	ChkErr(err)
 	if r {
-		logrus.Warningln("WIP :: functionality not implemented.")
-		os.Exit(1)
-
-		if arguments["<file>"] == nil {
-			logrus.Warningln("Missing 'file' parameter")
-			os.Exit(1)
-		}
-		file, err := arguments.String("<file>")
-		ChkErr(err)
-
-		logrus.Infoln("<file>: " + file)
-
+		// err = pighosts.LoadHostsFile()
+		// ChkErr(err)
 		os.Exit(0)
 	}
 	docopt.PrintHelpAndExit(err, usage)
