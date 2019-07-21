@@ -36,8 +36,7 @@ func removeComments(s string) string {
 	return s
 }
 
-// prepareHostsList
-func prepareHostsList(downloadHosts []string) (map[string]int, error) {
+func prepareHostsList(downloadHosts []string) map[string]int {
 	hosts := make(map[string]int, 0)
 
 	for l := range downloadHosts {
@@ -50,7 +49,7 @@ func prepareHostsList(downloadHosts []string) (map[string]int, error) {
 		hosts[hst]++
 	}
 
-	return hosts, nil
+	return hosts
 }
 
 func splitHostPerLine(hosts map[string]int) []string {

@@ -9,108 +9,73 @@ import (
 	"path"
 	"strings"
 	"time"
-
-	"github.com/sirupsen/logrus"
 )
 
-const headerHostFile = "###--pigHost_START------------------------------------"
-const footerHostFile = "###--pigHosts_END-------------------------------------"
+func UnloadHostsFile() error {
 
-const hostFile = "/Windows/System32/drivers/etc/hosts"
-const hostFileNew = "/tmp/pigHostBak/host.new"
-const hostFileEmpty = "/tmp/pigHostBak/host.empty"
+	// //read a clean version of host file
+	// s, err := readHostFile()
+	// if err != nil {
+	// 	return err
+	// }
+	// logrus.Infoln(s)
 
-var hostFileBak = "/tmp/pigHostBak/host_" + time.Now().Format("20060201T1504") + ".bak"
+	// //backup a clean version of host file
+	// i, err := backupHostFile(s)
+	// if err != nil {
+	// 	return err
+	// }
+	// logrus.Infoln(i)
 
-func ReadFileConf() error {
-	f, err := ioutil.ReadFile(pigHostsUrls)
-	if err != nil {
-		return err
-	}
-	defaultHostsUrlsTmp = strings.Split(string(f), "\n")
-
-	f, err = ioutil.ReadFile(pigHostsExcluded)
-	if err != nil {
-		return err
-	}
-	filterSpecificHostTmp = strings.Split(string(f), "\n")
-	return nil
-}
-
-func InitPigHosts(force bool) error {
-	homeFolder, err := os.UserHomeDir()
+	//prepare a new empty version of host file
+	err := prepareHostFile(nil)
 	if err != nil {
 		return err
 	}
 
-	homeFolder = homeFolder + "/.pigHosts"
-	pigHostsUrls = homeFolder + "/pigHosts.urls"
-	pigHostsExcluded = homeFolder + "/pigHosts.excluded"
-
-	pigHostsExcludedExist := true && !force
-	pigHostsUrlsExist := true && !force
-
-	if _, err := os.Stat(pigHostsUrls); os.IsNotExist(err) {
-		pigHostsUrlsExist = false
-	}
-
-	if _, err := os.Stat(pigHostsExcluded); os.IsNotExist(err) {
-		pigHostsExcludedExist = false
-	}
-
-	if _, err := os.Stat(homeFolder); os.IsNotExist(err) {
-		err = nil
-		err = os.Mkdir(homeFolder, os.ModeDir)
-		if err != nil {
-			return err
-		}
-	}
-
-	if !pigHostsUrlsExist {
-		f1, err := os.Create(pigHostsUrls)
-		if err != nil {
-			return err
-		}
-
-		defer f1.Sync()
-		defer f1.Close()
-
-		for i := range defaultHostsUrlsDefault {
-			_, err := f1.WriteString(defaultHostsUrlsDefault[i] + "\n")
-			if err != nil {
-				return err
-			}
-		}
-	}
-
-	if !pigHostsExcludedExist {
-		f2, err := os.Create(pigHostsExcluded)
-		if err != nil {
-			return err
-		}
-		defer f2.Sync()
-		defer f2.Close()
-
-		for i := range filterSpecificHostDefault {
-			_, err := f2.WriteString(filterSpecificHostDefault[i] + "\n")
-			if err != nil {
-				return err
-			}
-		}
-	}
-
-	if force {
-		logrus.Infoln("Created configuration file:\n\t" + pigHostsExcluded + "\n\t" + pigHostsUrls)
-	}
 	return nil
 }
 
 func LoadHostsFile() error {
 
+	// //read a clean version of host file
+	// s, err := readHostFile()
+	// if err != nil {
+	// 	return err
+	// }
+	// logrus.Infoln(s)
+
+	// //backup a clean version of host file
+	// i, err := backupHostFile(s)
+	// if err != nil {
+	// 	return err
+	// }
+	// logrus.Infoln(i)
+
+	hosts := make([]string, 0)
+	for _, k := range defaultHostsUrlsTmp {
+		z, err := downlaodRemoteList(k)
+		if err != nil {
+			return err
+		}
+		hosts = append(hosts, z...)
+	}
+
+	a := prepareHostsList(hosts)
+	b := splitHostPerLine(a)
+	err := prepareHostFile(b)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func downlaodRemoteList(url string) ([]string, error) {
+	if url == "" || (!strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://")) {
+		return []string{}, nil
+	}
+
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
@@ -135,7 +100,7 @@ func downlaodRemoteList(url string) ([]string, error) {
 	return r, nil
 }
 
-func prepareHostFile(hosts map[string]int) error {
+func prepareHostFile(hosts []string) error {
 	header := "\n\n" + headerHostFile
 	footer := "\n\n" + footerHostFile + "\n\n"
 
@@ -173,7 +138,7 @@ func prepareHostFile(hosts map[string]int) error {
 		if err != nil {
 			return err
 		}
-		for k := range hosts {
+		for _, k := range hosts {
 			_, err := f.WriteString(k + "\n")
 			if err != nil {
 				return err
