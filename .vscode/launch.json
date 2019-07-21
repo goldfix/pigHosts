@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
+
         {
             "name": "Launch file",
             "type": "go",
@@ -28,12 +29,22 @@
         {
             "mode": "auto",
             "trace": "verbose",
-            "name": "Launch-Args",
+            "name": "Launch-Force_Init",
             "type": "go",
             "request": "launch",
             "program": "${fileDirname}",
             "env": {"GO111MODULE":"on"},
             "args": ["force_init",]
+        },
+        {
+            "mode": "auto",
+            "trace": "verbose",
+            "name": "Launch-Load",
+            "type": "go",
+            "request": "launch",
+            "program": "${fileDirname}",
+            "env": {"GO111MODULE":"on"},
+            "args": ["load",]
         }
     ]
 }
