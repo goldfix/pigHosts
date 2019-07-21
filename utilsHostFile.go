@@ -13,20 +13,6 @@ import (
 
 func UnloadHostsFile() error {
 
-	// //read a clean version of host file
-	// s, err := readHostFile()
-	// if err != nil {
-	// 	return err
-	// }
-	// logrus.Infoln(s)
-
-	// //backup a clean version of host file
-	// i, err := backupHostFile(s)
-	// if err != nil {
-	// 	return err
-	// }
-	// logrus.Infoln(i)
-
 	//prepare a new empty version of host file
 	err := prepareHostFile(nil)
 	if err != nil {
@@ -46,20 +32,6 @@ func UnloadHostsFile() error {
 }
 
 func LoadHostsFile() error {
-
-	// //read a clean version of host file
-	// s, err := readHostFile()
-	// if err != nil {
-	// 	return err
-	// }
-	// logrus.Infoln(s)
-
-	// //backup a clean version of host file
-	// i, err := backupHostFile(s)
-	// if err != nil {
-	// 	return err
-	// }
-	// logrus.Infoln(i)
 
 	hosts := make([]string, 0)
 	for _, k := range defaultHostsUrlsTmp {
