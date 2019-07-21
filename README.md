@@ -11,8 +11,8 @@
 
 pigHost
 
-Usage: pigHost [load | unload | force_init] [-h | -v | -o] [<file>]
- pigHost (load <file>)
+Usage: pigHost [load | unload | force_init] [-h | -v | -o]
+ pigHost (load)
  pigHost (unload)
  pigHost (force_init)
  pigHost (--help | -h)
@@ -25,12 +25,8 @@ Options:
 
 Command:
  unload         disable and remove custom hosts
- load           load custom hosts from exsternal urls file 
- force_init     delete and create a new set of configuration files:
-                '.pigHosts/pigHosts.excluded' and '.pigHosts/pigHosts.urls' in your user/home folder
-
-Arguments:
- file          file to process
+ load           load custom hosts from external urls file (if file is not declared pigHost uses /HOME_FOLDER/.pigHosts/pigHosts.urls)
+ force_init     delete and create a new set of configuration files: '.pigHosts/pigHosts.excluded' and '.pigHosts/pigHosts.urls' in your user/home folder
 
 ```
 
