@@ -56,3 +56,20 @@ const hostFileNew = "/tmp/pigHostBak/host.new"
 const hostFileEmpty = "/tmp/pigHostBak/host.empty"
 
 var hostFileBak = "/tmp/pigHostBak/host_" + time.Now().Format("20060201T1504") + ".bak"
+
+const manifest = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+<assemblyIdentity
+    version="1.0.0.0"
+    name="pigHosts.exe"
+    type="win32"
+/>
+<description>pigHosts.exe</description>
+<trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+    <security>
+        <requestedPrivileges>
+            <requestedExecutionLevel level="requireAdministrator" uiAccess="false"/>
+        </requestedPrivileges>
+    </security>
+</trustInfo>
+</assembly>`
