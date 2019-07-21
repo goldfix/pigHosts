@@ -68,6 +68,15 @@ func LoadHostsFile() error {
 		return err
 	}
 
+	f, err := ioutil.ReadFile(hostFileNew)
+	if err != nil {
+		return err
+	}
+	err = ioutil.WriteFile(hostFile, f, os.ModeType)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
