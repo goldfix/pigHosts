@@ -12,7 +12,7 @@ func init() {
 
 func Test_prepareHostFile(t *testing.T) {
 	type args struct {
-		hosts map[string]int
+		hosts []string
 	}
 	tests := []struct {
 		name    string
@@ -21,12 +21,13 @@ func Test_prepareHostFile(t *testing.T) {
 	}{
 
 		{"Test_prepareHostFile",
-			args{hosts: map[string]int{
-				"127.0.0.1 local":                 3,
-				"127.0.0.1 localhost":             2,
-				"127.0.0.1 localhost.localdomain": 2,
-				"255.255.255.255 broadcasthost":   3,
-				"0.0.0.0 test.test.io":            1},
+			args{hosts: []string{
+				"127.0.0.1 local",
+				"127.0.0.1 localhost",
+				"127.0.0.1 localhost.localdomain",
+				"255.255.255.255 broadcasthost",
+				"0.0.0.0 test.test.io",
+			},
 			},
 			false},
 		{"Test_prepareHostFile Unload", args{hosts: nil}, false},

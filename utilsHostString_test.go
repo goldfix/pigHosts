@@ -95,11 +95,7 @@ func Test_prepareHostsList(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := prepareHostsList(tt.args.urls)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("prepareHostsList() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
+			got := prepareHostsList(tt.args.urls)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("prepareHostsList() = %v, want %v", got, tt.want)
 			}

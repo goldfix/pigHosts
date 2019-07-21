@@ -33,6 +33,15 @@ func UnloadHostsFile() error {
 		return err
 	}
 
+	f, err := ioutil.ReadFile(hostFileEmpty)
+	if err != nil {
+		return err
+	}
+	err = ioutil.WriteFile(hostFile, f, os.ModeType)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -64,6 +73,15 @@ func LoadHostsFile() error {
 	a := prepareHostsList(hosts)
 	b := splitHostPerLine(a)
 	err := prepareHostFile(b)
+	if err != nil {
+		return err
+	}
+
+	f, err := ioutil.ReadFile(hostFileNew)
+	if err != nil {
+		return err
+	}
+	err = ioutil.WriteFile(hostFile, f, os.ModeType)
 	if err != nil {
 		return err
 	}
