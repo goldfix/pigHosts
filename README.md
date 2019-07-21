@@ -45,3 +45,10 @@ Some antivirus locks `.../etc/hosts` file. Remember to configure correctly you a
 - On Windows is necessary run `pigHosts` as _Administrator_.
 - On Linux is necessary run `pigHosts` with elevated privileges (`sudo pighost ...`).
 
+#### Thanks to: 
+- https://firebog.net/
+- https://www.squidblacklist.org/
+- https://github.com/StevenBlack/hosts
+- https://github.com/docopt/docopt.go
+- github.com/sirupsen/logrus
+
