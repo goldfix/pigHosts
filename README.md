@@ -4,6 +4,7 @@
 - Add and remove blacklist hosts, in your hosts file.
 - Possibility to customize your links list from where download blacklist file.
 - Possibility to esclude specific hosts.
+- Only for Windows... w.i.p. Linux version.
 
 ### Use: 
 
@@ -32,7 +33,7 @@ Command:
 
 ### Configuration files: 
 
-When pigHost is started first time, creates two configuration file:
+When you started first time pigHost, will be created two configuration file:
 
 - `<USER_FOLDER>/.pigHosts/pigHosts.excluded` : list of hosts to esclude. These hosts are excluded, if present, from blacklists.
 - `<USER_FOLDER>/.pigHosts/pigHosts.urls` : in this file can you add your list of urls where to download blacklists.

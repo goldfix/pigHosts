@@ -85,6 +85,18 @@ func InitPigHosts(force bool) error {
 		}
 	}
 
+	//at the first execution, makes a backup copy of hosts file
+	if _, err := os.Stat(hostFile + ".original"); os.IsNotExist(err) {
+		b, err := ioutil.ReadFile(hostFile)
+		if err != nil {
+			return err
+		}
+		err = ioutil.WriteFile(hostFile+".original", b, os.ModeType)
+		if err != nil {
+			return err
+		}
+	}
+
 	if force {
 		logrus.Infoln("Created configuration file:\n\t" + pigHostsExcluded + "\n\t" + pigHostsUrls)
 	}
