@@ -45,10 +45,16 @@ Some antivirus locks `.../etc/hosts` file. Remember to configure correctly you a
 - On Windows is necessary run `pigHosts` as _Administrator_.
 - On Linux is necessary run `pigHosts` with elevated privileges (`sudo pighost ...`).
 
+### Build from source
+
+- Download [go-task](https://github.com/go-task/task/releases).
+- Set your `GOPATH` environment variable.
+- In the `./src` folder, execute command: `task build-mod-vendor`.
+
 #### Thanks to: 
 - https://firebog.net/
 - https://www.squidblacklist.org/
 - https://github.com/StevenBlack/hosts
 - https://github.com/docopt/docopt.go
 - https://github.com/sirupsen/logrus
-
+- https://github.com/go-task/task
