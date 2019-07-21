@@ -1,7 +1,7 @@
 package pighosts
 
-var PigHostsUrls = ""
-var PigHostsExcluded = ""
+var pigHostsUrls = ""
+var pigHostsExcluded = ""
 
 const numHostPerLine = 9
 

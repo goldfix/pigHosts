@@ -9,6 +9,8 @@ import (
 	"path"
 	"strings"
 	"time"
+
+	"github.com/sirupsen/logrus"
 )
 
 const headerHostFile = "###--pigHost_START------------------------------------"
@@ -21,13 +23,13 @@ const hostFileEmpty = "/tmp/pigHostBak/host.empty"
 var hostFileBak = "/tmp/pigHostBak/host_" + time.Now().Format("20060201T1504") + ".bak"
 
 func ReadFileConf() error {
-	f, err := ioutil.ReadFile(PigHostsUrls)
+	f, err := ioutil.ReadFile(pigHostsUrls)
 	if err != nil {
 		return err
 	}
 	defaultHostsUrlsTmp = strings.Split(string(f), "\n")
 
-	f, err = ioutil.ReadFile(PigHostsExcluded)
+	f, err = ioutil.ReadFile(pigHostsExcluded)
 	if err != nil {
 		return err
 	}
@@ -42,17 +44,17 @@ func InitPigHosts(force bool) error {
 	}
 
 	homeFolder = homeFolder + "/.pigHosts"
-	PigHostsUrls = homeFolder + "/pigHosts.urls"
-	PigHostsExcluded = homeFolder + "/pigHosts.excluded"
+	pigHostsUrls = homeFolder + "/pigHosts.urls"
+	pigHostsExcluded = homeFolder + "/pigHosts.excluded"
 
 	pigHostsExcludedExist := true && !force
 	pigHostsUrlsExist := true && !force
 
-	if _, err := os.Stat(PigHostsUrls); os.IsNotExist(err) {
+	if _, err := os.Stat(pigHostsUrls); os.IsNotExist(err) {
 		pigHostsUrlsExist = false
 	}
 
-	if _, err := os.Stat(PigHostsExcluded); os.IsNotExist(err) {
+	if _, err := os.Stat(pigHostsExcluded); os.IsNotExist(err) {
 		pigHostsExcludedExist = false
 	}
 
@@ -65,7 +67,7 @@ func InitPigHosts(force bool) error {
 	}
 
 	if !pigHostsUrlsExist {
-		f1, err := os.Create(PigHostsUrls)
+		f1, err := os.Create(pigHostsUrls)
 		if err != nil {
 			return err
 		}
@@ -82,7 +84,7 @@ func InitPigHosts(force bool) error {
 	}
 
 	if !pigHostsExcludedExist {
-		f2, err := os.Create(PigHostsExcluded)
+		f2, err := os.Create(pigHostsExcluded)
 		if err != nil {
 			return err
 		}
@@ -97,6 +99,9 @@ func InitPigHosts(force bool) error {
 		}
 	}
 
+	if force {
+		logrus.Infoln("Created configuration file:\n\t" + pigHostsExcluded + "\n\t" + pigHostsUrls)
+	}
 	return nil
 }
 
