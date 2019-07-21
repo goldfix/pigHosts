@@ -50,5 +50,5 @@ Some antivirus locks `.../etc/hosts` file. Remember to configure correctly you a
 - https://www.squidblacklist.org/
 - https://github.com/StevenBlack/hosts
 - https://github.com/docopt/docopt.go
-- github.com/sirupsen/logrus
+- https://github.com/sirupsen/logrus
 
