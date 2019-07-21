@@ -69,16 +69,16 @@ Command:
 	r, err = arguments.Bool("unload")
 	ChkErr(err)
 	if r {
-		err := pighosts.UnloadHostsFile()
-		ChkErr(err)
+		// err := pighosts.UnloadHostsFile()
+		// ChkErr(err)
 		os.Exit(0)
 	}
 
 	r, err = arguments.Bool("load")
 	ChkErr(err)
 	if r {
-		err = pighosts.LoadHostsFile()
-		ChkErr(err)
+		// err = pighosts.LoadHostsFile()
+		// ChkErr(err)
 		os.Exit(0)
 	}
 	docopt.PrintHelpAndExit(err, usage)
