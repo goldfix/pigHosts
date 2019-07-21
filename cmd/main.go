@@ -10,7 +10,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const VERSION string = "0.1"
+const VERSION string = "0.2"
 
 func init() {
 	logrus.SetFormatter(&logrus.TextFormatter{DisableTimestamp: true, ForceColors: true, DisableLevelTruncation: true})
@@ -62,12 +62,10 @@ Arguments:
 		os.Exit(0)
 	}
 
-	pighosts.InitPigHosts(false)
 	r, err = arguments.Bool("force_init")
 	ChkErr(err)
 	if r {
 		pighosts.InitPigHosts(true)
-		logrus.Infoln("Created configuration file:\n\t" + pighosts.PigHostsExcluded + "\n\t" + pighosts.PigHostsUrls)
 		os.Exit(0)
 	}
 
