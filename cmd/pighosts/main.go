@@ -96,7 +96,7 @@ Command:
 func ChkErr(err error) {
 	if err != nil {
 		logrus.Error(err)
-		logrus.Errorf("Verion: %s", VERSION)
+		logrus.Errorf("Verion: %s", version)
 		logrus.Errorf("Stack : %s", string(debug.Stack()))
 		os.Exit(1)
 	}
