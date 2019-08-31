@@ -10,7 +10,11 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const VERSION string = "0.5"
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
 
 func init() {
 	logrus.SetFormatter(&logrus.TextFormatter{DisableTimestamp: true, ForceColors: true, DisableLevelTruncation: true})
@@ -38,7 +42,7 @@ Options:
 
 Command:
  unload         disable and remove custom hosts
- load           load custom hosts from external urls declared in the file: '.pigHosts/pigHosts.urls' 
+ load           load custom hosts from external urls declared in the file: '.pigHosts/pigHosts.urls'
  force_init     delete and create a new set of configuration files: '.pigHosts/pigHosts.excluded' and '.pigHosts/pigHosts.urls' in your user/home folder`
 
 	arguments, err := docopt.ParseDoc(usage)
@@ -54,7 +58,7 @@ Command:
 	r, err = arguments.Bool("--version")
 	ChkErr(err)
 	if r {
-		logrus.Infof("VERSION: %s", VERSION)
+		logrus.Infof("%v, commit %v, built at %v", version, commit, date)
 		os.Exit(0)
 	}
 
@@ -92,7 +96,7 @@ Command:
 func ChkErr(err error) {
 	if err != nil {
 		logrus.Error(err)
-		logrus.Errorf("Verion: %s", VERSION)
+		logrus.Errorf("Verion: %s", version)
 		logrus.Errorf("Stack : %s", string(debug.Stack()))
 		os.Exit(1)
 	}
