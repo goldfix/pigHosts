@@ -9,6 +9,7 @@ const numHostPerLine = 9
 
 const nonRoutable = "0.0.0.0"
 const localHost = "127.0.0.1"
+const localHost_ipv6 = "::1"
 
 var filterSpecificHostDefault = []string{
 	"127.0.0.1 localhost",
@@ -37,12 +38,17 @@ var filterSpecificHostDefault = []string{
 	"ip6-allrouters",
 	"ip6-allhosts",
 	"0.0.0.0",
+	"fe00::0",
+	"ff00::0",
+	"ff02::1",
+	"ff02::2",
 }
 
 var defaultHostsUrlsDefault = []string{
-	"https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
-	"https://www.squidblacklist.org/downloads/dg-ads.acl",
-	"https://www.squidblacklist.org/downloads/dg-malicious.acl",
+	"# https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
+	"# https://www.squidblacklist.org/downloads/dg-ads.acl",
+	"# https://www.squidblacklist.org/downloads/dg-malicious.acl",
+	"https://someonewhocares.org/hosts/ipv6/hosts",
 }
 
 var defaultHostsUrlsTmp = []string{}
