@@ -1,36 +1,39 @@
 project_name: pigHosts
+dist: ../dist
+env:
+  - CGO_ENABLED=0
+  - GO111MODULE=on
 before:
   hooks:
     - task mod-vendor
 builds:
-  id: "pigHosts"
-  main: ./cmd/pighosts/main.go
-  env:
-    - CGO_ENABLED=0
-    - GO111MODULE=on
-  goos:
-    - linux
-    - darwin
-    - windows
-  goarch:
-    - 386
-    - amd64
-    - arm
-    - arm64
+  -
+    id: "pigHosts"
+    main: ./cmd/pighosts/main.go
+    goos:
+      - linux
+      - windows
+    goarch:
+      - 386
+      - amd64
 archives:
-  id: "pigHosts"
-  name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
-  format: zip
-  replacements:
-    linux: Linux
-    windows: Windows
-    386: i386
-    amd64: x86_64
-  files:
-    - README.md
+  -
+    id: "pigHosts"
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    replacements:
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+    files:
+      - README.md
 checksum:
   name_template: 'checksums.txt'
-  algorithm: sha256
+  algorithm: md5
 snapshot:
   name_template: "{{ .Tag }}-next"
 changelog:
