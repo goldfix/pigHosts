@@ -9,8 +9,8 @@ var pigHostsExcluded = ""
 const numHostPerLine = 9
 
 const nonRoutable = "0.0.0.0"
-const localHost = "127.0.0.1"
-const localHost_ipv6 = "::1"
+const localHostIP4 = "127.0.0.1"
+const localHostIP6 = "::1"
 
 var filterSpecificHostDefault = []string{
 	"127.0.0.1 localhost",

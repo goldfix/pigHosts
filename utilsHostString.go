@@ -17,8 +17,8 @@ func isSpecificHost(s string) bool {
 func removeLocalHost(s string) string {
 
 	if !isSpecificHost(s) {
-		s = strings.ReplaceAll(s, localHost, "")
-		s = strings.ReplaceAll(s, localHost_ipv6, "")
+		s = strings.ReplaceAll(s, localHostIP4, "")
+		s = strings.ReplaceAll(s, localHostIP6, "")
 		s = strings.ReplaceAll(s, nonRoutable, "")
 		return strings.TrimSpace(s)
 	}
