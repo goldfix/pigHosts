@@ -1,6 +1,7 @@
 package pighosts
 
 import "time"
+import "os"
 
 var pigHostsUrls = ""
 var pigHostsExcluded = ""
@@ -8,8 +9,8 @@ var pigHostsExcluded = ""
 const numHostPerLine = 9
 
 const nonRoutable = "0.0.0.0"
-const localHost = "127.0.0.1"
-const localHost_ipv6 = "::1"
+const localHostIP4 = "127.0.0.1"
+const localHostIP6 = "::1"
 
 var filterSpecificHostDefault = []string{
 	"127.0.0.1 localhost",
@@ -58,10 +59,10 @@ const headerHostFile = "###--pigHost_START------------------------------------"
 const footerHostFile = "###--pigHosts_END-------------------------------------"
 
 const hostFile = "/Windows/System32/drivers/etc/hosts"
-const hostFileNew = "/tmp/pigHostBak/host.new"
-const hostFileEmpty = "/tmp/pigHostBak/host.empty"
 
-var hostFileBak = "/tmp/pigHostBak/host_" + time.Now().Format("20060201T1504") + ".bak"
+var hostFileNew = os.TempDir() + "/pigHostBak/host.new"
+var hostFileEmpty = os.TempDir() + "/pigHostBak/host.empty"
+var hostFileBak = os.TempDir() + "/pigHostBak/host_" + time.Now().Format("20060201T1504") + ".bak"
 
 const manifest = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
