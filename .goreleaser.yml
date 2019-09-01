@@ -32,7 +32,7 @@ archives:
     files:
       - README.md
 checksum:
-  name_template: 'checksums.txt'
+  name_template: 'checksums_md5.txt'
   algorithm: md5
 snapshot:
   name_template: "{{ .Tag }}-next"

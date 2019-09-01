@@ -95,8 +95,8 @@ Command:
 // ChkErr check returned error
 func ChkErr(err error) {
 	if err != nil {
-		logrus.Error(err)
-		logrus.Errorf("Verion: %s", version)
+		logrus.Error(err, "\n\n")
+		logrus.Errorf("Version : %v, commit %v, built at %v", version, commit, date)
 		logrus.Errorf("Stack : %s", string(debug.Stack()))
 		os.Exit(1)
 	}
