@@ -37,4 +37,8 @@ tasks:
     cmds:
       - go clean -testcache
       - go test -v ./...
-
+  package:
+    desc: Prepare all packages.
+    cmds:
+      - goreleaser check
+      - goreleaser release --rm-dist

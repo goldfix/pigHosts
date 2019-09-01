@@ -4,7 +4,8 @@
 - Add and remove blacklist hosts, from your hosts file.
 - Possibility to customize your download blacklist links.
 - Possibility to esclude specific hosts.
-- Only for Windows... **wip Linux version**.
+- Only for Windows.
+- *Linux version is wip...*
 
 ### Use: 
 
@@ -52,9 +53,17 @@ Some antivirus locks `.../etc/hosts` file. Remember to configure correctly you a
 - In the `./src` folder, execute command: `task build-mod-vendor`.
 
 #### Thanks to: 
+
+Blocklist Collection sites:
+
 - https://firebog.net/
 - https://www.squidblacklist.org/
 - https://github.com/StevenBlack/hosts
+- https://someonewhocares.org/
+
+Tools and libraries:
+
 - https://github.com/docopt/docopt.go
 - https://github.com/sirupsen/logrus
 - https://github.com/go-task/task
+- https://github.com/goreleaser/goreleaser
