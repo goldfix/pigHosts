@@ -13,13 +13,13 @@ func ReadFileConf() error {
 	if err != nil {
 		return err
 	}
-	defaultHostsUrlsTmp = strings.Split(string(f), "\n")
+	defaultHostsUrlsTmp = strings.Split(strings.TrimSpace(string(f)), "\n")
 
 	f, err = ioutil.ReadFile(pigHostsExcluded)
 	if err != nil {
 		return err
 	}
-	filterSpecificHostTmp = strings.Split(string(f), "\n")
+	filterSpecificHostTmp = strings.Split(strings.TrimSpace(string(f)), "\n")
 	return nil
 }
 

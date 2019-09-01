@@ -66,22 +66,27 @@ Command:
 	ChkErr(err)
 	if r {
 		pighosts.InitPigHosts(true)
+		logrus.Info("Configuration files reloaded.")
 		os.Exit(0)
 	}
 
 	r, err = arguments.Bool("unload")
 	ChkErr(err)
 	if r {
+		logrus.Info("Start process...")
 		err := pighosts.UnloadHostsFile()
 		ChkErr(err)
+		logrus.Info("End process.")
 		os.Exit(0)
 	}
 
 	r, err = arguments.Bool("load")
 	ChkErr(err)
 	if r {
+		logrus.Info("Start process...")
 		err = pighosts.LoadHostsFile()
 		ChkErr(err)
+		logrus.Info("End process.")
 		os.Exit(0)
 	}
 	docopt.PrintHelpAndExit(err, usage)

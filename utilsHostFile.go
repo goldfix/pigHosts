@@ -9,6 +9,8 @@ import (
 	"path"
 	"strings"
 	"time"
+
+	"github.com/sirupsen/logrus"
 )
 
 func UnloadHostsFile() error {
@@ -33,6 +35,7 @@ func UnloadHostsFile() error {
 
 func LoadHostsFile() error {
 
+	logrus.Info("Download hosts list:")
 	hosts := make([]string, 0)
 	for _, k := range defaultHostsUrlsTmp {
 		z, err := downlaodRemoteList(k)
@@ -40,6 +43,7 @@ func LoadHostsFile() error {
 			return err
 		}
 		hosts = append(hosts, z...)
+		logrus.Info("\t", k, " -- Num. hosts download: ", len(z))
 	}
 
 	a := prepareHostsList(hosts)
@@ -57,6 +61,7 @@ func LoadHostsFile() error {
 	if err != nil {
 		return err
 	}
+	logrus.Info("Host file updated.")
 
 	return nil
 }
