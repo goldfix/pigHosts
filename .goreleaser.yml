@@ -35,7 +35,7 @@ checksum:
   name_template: 'checksums_md5.txt'
   algorithm: md5
 snapshot:
-  name_template: "{{ .Tag }}-next"
+  name_template: SNAPSHOT-{{ time "2006_01_02_T_15_04_05" }}-{{ .Commit }}
 changelog:
   sort: asc
   filters:
