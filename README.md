@@ -37,7 +37,7 @@ Command:
 When you started first time pigHost, will be created two configuration file:
 
 - `<USER_FOLDER>/.pigHosts/pigHosts.excluded` : list of hosts to esclude. These hosts are excluded, if present, from blacklists.
-- `<USER_FOLDER>/.pigHosts/pigHosts.urls` : in this file can you add your list of urls where to download blacklists.
+- `<USER_FOLDER>/.pigHosts/pigHosts.urls` : in this file you can add your list of urls where to download blacklists.
 
 ### Important notes
 
