@@ -12,7 +12,6 @@ var pigHostsUrls = ""
 var pigHostsExcluded = ""
 
 const numHostPerLine = 9
-
 const nonRoutable = "0.0.0.0"
 const localHostIP4 = "127.0.0.1"
 const localHostIP6 = "::1"
