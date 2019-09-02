@@ -1,8 +1,13 @@
 package pighosts
 
-import "time"
-import "os"
+import (
+	"os"
+	"time"
 
+	"github.com/briandowns/spinner"
+)
+
+var spinnerInd = spinner.New(spinner.CharSets[9], 100*time.Millisecond)
 var pigHostsUrls = ""
 var pigHostsExcluded = ""
 

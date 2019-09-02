@@ -15,6 +15,7 @@ import (
 
 func UnloadHostsFile() error {
 
+	spinnerInd.Restart()
 	//prepare a new empty version of host file
 	err := prepareHostFile(nil)
 	if err != nil {
@@ -29,6 +30,7 @@ func UnloadHostsFile() error {
 	if err != nil {
 		return err
 	}
+	spinnerInd.Stop()
 
 	return nil
 }
@@ -38,12 +40,14 @@ func LoadHostsFile() error {
 	logrus.Info("Download hosts list:")
 	hosts := make([]string, 0)
 	for _, k := range defaultHostsUrlsTmp {
+		logrus.Info("\t", k)
+		spinnerInd.Restart()
 		z, err := downlaodRemoteList(k)
 		if err != nil {
 			return err
 		}
 		hosts = append(hosts, z...)
-		logrus.Info("\t", k, " -- Num. hosts download: ", len(z))
+		spinnerInd.Stop()
 	}
 
 	a := prepareHostsList(hosts)
@@ -67,6 +71,7 @@ func LoadHostsFile() error {
 }
 
 func downlaodRemoteList(url string) ([]string, error) {
+
 	if url == "" || (!strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://")) {
 		return []string{}, nil
 	}
@@ -92,10 +97,12 @@ func downlaodRemoteList(url string) ([]string, error) {
 	}
 
 	r := strings.FieldsFunc(strings.ReplaceAll(string(b), "\r\n", "\n"), f)
+
 	return r, nil
 }
 
 func prepareHostFile(hosts []string) error {
+
 	header := "\n\n" + headerHostFile
 	footer := "\n\n" + footerHostFile + "\n\n"
 
@@ -151,6 +158,7 @@ func prepareHostFile(hosts []string) error {
 }
 
 func readHostFile() (string, error) {
+
 	result := ""
 	f, err := os.OpenFile(hostFile, os.O_RDONLY, os.ModeType)
 	if err != nil {
@@ -180,10 +188,12 @@ func readHostFile() (string, error) {
 	b := make([]byte, startLine)
 	f.ReadAt(b, 0)
 	result = string(b)
+
 	return result, nil
 }
 
 func backupHostFile(s string) (int64, error) {
+
 	dir := path.Dir(hostFileBak)
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		err = nil
@@ -204,5 +214,6 @@ func backupHostFile(s string) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
+
 	return stat.Size(), nil
 }

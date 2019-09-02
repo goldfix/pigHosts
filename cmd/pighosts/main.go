@@ -5,9 +5,7 @@ import (
 	"os"
 	pighosts "pigHosts"
 	"runtime/debug"
-	"time"
 
-	"github.com/briandowns/spinner"
 	"github.com/docopt/docopt-go"
 	"github.com/sirupsen/logrus"
 )
@@ -46,11 +44,6 @@ Command:
  unload         disable and remove custom hosts
  load           load custom hosts from external urls declared in the file: '.pigHosts/pigHosts.urls'
  force_init     delete and create a new set of configuration files: '.pigHosts/pigHosts.excluded' and '.pigHosts/pigHosts.urls' in your user/home folder`
-
-	ind := spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
-	ind.Start()
-	time.Sleep(2 * time.Second)
-	ind.Stop()
 
 	arguments, err := docopt.ParseDoc(usage)
 	ChkErr(err)
