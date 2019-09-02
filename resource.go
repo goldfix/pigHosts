@@ -16,7 +16,7 @@ const nonRoutable = "0.0.0.0"
 const localHostIP4 = "127.0.0.1"
 const localHostIP6 = "::1"
 const hostFileWin = "/Windows/System32/drivers/etc/hosts"
-const hostFileLinux = "TBD"
+const hostFileLinux = "/etc/hosts"
 const numHostPerLineWin = 9
 const numHostPerLineLinux = 1
 
