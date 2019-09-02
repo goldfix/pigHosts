@@ -19,11 +19,11 @@ tasks:
     desc: Download modules and force a build of project using vendor folder.
     deps: [mod-vendor]
     cmds:
-      - go build -mod vendor -i -a -o $GOPATH/bin/pigHosts.exe ./cmd/...
+      - go build -mod vendor -i -a -o $GOPATH/bin/pigHosts{{exeExt}} ./cmd/...
   build:
     desc: Build project using vendor folder.
     cmds:
-      - go build -mod vendor -i -o $GOPATH/bin/pigHosts.exe ./cmd/...
+      - go build -mod vendor -i -o $GOPATH/bin/pigHosts{{exeExt}} ./cmd/...
   mod-vendor:
     desc: Download module into vendor folder.
     cmds:
