@@ -96,7 +96,7 @@ Command:
 		os.Exit(0)
 	}
 
-	logrus.Info("Try to use: -h or --help for help online.\n")
+	logrus.Info("Try to use: option -h or --help for help online.\n")
 	os.Exit(0)
 }
 
