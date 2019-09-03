@@ -5,8 +5,7 @@
 - Possibility to customize your download blacklist links.
 - Possibility to esclude specific hosts.
 - On Windows: optimized load hosts, more hosts per line.
-- Only for Windows.
-- *Linux version is wip...*
+- Windows & Linux version.
 
 ### Use: 
 
