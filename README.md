@@ -27,9 +27,9 @@ Options:
  -v, --version  view version
 
 Command:
+ load           load custom hosts from external urls declared in the file: '<HOME_FOLDER>/.pigHosts/pigHosts.urls'
  unload         disable and remove custom hosts
- load           load custom hosts from external urls declared in the file: '.pigHosts/pigHosts.urls' 
- force_init     delete and create a new set of configuration files: '.pigHosts/pigHosts.excluded' and '.pigHosts/pigHosts.urls' in your user/home folder
+ force_init     delete and create a new set of configuration files: '<HOME_FOLDER>/.pigHosts/pigHosts.excluded' and '<HOME_FOLDER>/.pigHosts/pigHosts.urls'
 
 ```
 
