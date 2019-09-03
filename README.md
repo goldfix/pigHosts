@@ -1,6 +1,6 @@
 ## pigHosts
 
-- Download blacklist hosts from remote sites.
+- Download blocklist hosts from remote sites.
 - Add and remove blacklist hosts, from your hosts file.
 - Possibility to customize your download blacklist links.
 - Possibility to esclude specific hosts.
