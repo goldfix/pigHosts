@@ -65,7 +65,7 @@ func LoadHostsFile() error {
 	if err != nil {
 		return err
 	}
-	logrus.Info("Host file updated.")
+	logrus.Info("Hosts file updated.")
 
 	return nil
 }
