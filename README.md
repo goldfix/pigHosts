@@ -1,8 +1,8 @@
 ## pigHosts
 
 - Download blocklist hosts from remote sites.
-- Add and remove blacklist hosts, from your hosts file.
-- Possibility to customize your download blacklist links.
+- Add and remove blocklist hosts, from your hosts file.
+- Possibility to customize your download blocklist links.
 - Possibility to esclude specific hosts.
 - Windows & Linux version.
 
@@ -35,8 +35,8 @@ Command:
 
 When you started first time pigHost, will be created two configuration file:
 
-- `<USER_FOLDER>/.pigHosts/pigHosts.excluded` : list of hosts to esclude. These hosts are excluded, if present, from blacklists.
-- `<USER_FOLDER>/.pigHosts/pigHosts.urls` : in this file you can add your list of urls where to download blacklists.
+- `<USER_FOLDER>/.pigHosts/pigHosts.excluded` : list of hosts to esclude. These hosts are excluded, if present, from blocklist.
+- `<USER_FOLDER>/.pigHosts/pigHosts.urls` : in this file you can add your list of urls where to download blocklist .
 
 ### Important notes
 
