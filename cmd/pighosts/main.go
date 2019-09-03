@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	pighosts "pigHosts"
 	"runtime/debug"
@@ -26,7 +25,11 @@ func init() {
 }
 
 func main() {
-	usage := `pigHost
+	homeFolder, err := os.UserHomeDir()
+	ChkErr(err)
+
+	usage := `
+pigHost
 
 Usage: pigHost [load | unload | force_init] [-h | -v | -o]
  pigHost (load)
@@ -41,9 +44,10 @@ Options:
  -v, --version  view version
 
 Command:
+ load           load custom hosts from external urls declared in the file: '` + homeFolder + `/.pigHosts/pigHosts.urls'
  unload         disable and remove custom hosts
- load           load custom hosts from external urls declared in the file: '.pigHosts/pigHosts.urls'
- force_init     delete and create a new set of configuration files: '.pigHosts/pigHosts.excluded' and '.pigHosts/pigHosts.urls' in your user/home folder`
+ force_init     delete and create a new set of configuration files: '` + homeFolder + `/.pigHosts/pigHosts.excluded' and '` + homeFolder + `/.pigHosts/pigHosts.urls'
+ `
 
 	arguments, err := docopt.ParseDoc(usage)
 	ChkErr(err)
@@ -83,17 +87,16 @@ Command:
 	r, err = arguments.Bool("load")
 	ChkErr(err)
 	if r {
+
 		logrus.Info("Start process...")
 		err = pighosts.LoadHostsFile()
 		ChkErr(err)
 		logrus.Info("End process.")
+
 		os.Exit(0)
 	}
-	docopt.PrintHelpAndExit(err, usage)
 
-	err = fmt.Errorf("My Err: %v", "super error!")
-	ChkErr(err)
-
+	logrus.Info("Try to use: option -h or --help for help online.\n")
 	os.Exit(0)
 }
 
@@ -101,7 +104,7 @@ Command:
 func ChkErr(err error) {
 	if err != nil {
 		logrus.Error(err, "\n\n")
-		logrus.Errorf("Version : %v, commit %v, built at %v", version, commit, date)
+		logrus.Errorf("Version : %v - Commit: %v - Built: %v", version, commit, date)
 		logrus.Errorf("Stack : %s", string(debug.Stack()))
 		os.Exit(1)
 	}

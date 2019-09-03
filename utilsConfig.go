@@ -46,7 +46,7 @@ func InitPigHosts(force bool) error {
 
 	if _, err := os.Stat(homeFolder); os.IsNotExist(err) {
 		err = nil
-		err = os.Mkdir(homeFolder, os.ModeDir)
+		err = os.Mkdir(homeFolder, os.ModePerm)
 		if err != nil {
 			return err
 		}

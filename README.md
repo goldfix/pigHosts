@@ -4,8 +4,7 @@
 - Add and remove blacklist hosts, from your hosts file.
 - Possibility to customize your download blacklist links.
 - Possibility to esclude specific hosts.
-- Only for Windows.
-- *Linux version is wip...*
+- Windows & Linux version.
 
 ### Use: 
 
@@ -26,9 +25,9 @@ Options:
  -v, --version  view version
 
 Command:
+ load           load custom hosts from external urls declared in the file: '<USER_FOLDER>/.pigHosts/pigHosts.urls'
  unload         disable and remove custom hosts
- load           load custom hosts from external urls declared in the file: '.pigHosts/pigHosts.urls' 
- force_init     delete and create a new set of configuration files: '.pigHosts/pigHosts.excluded' and '.pigHosts/pigHosts.urls' in your user/home folder
+ force_init     delete and create a new set of configuration files: '<USER_FOLDER>/.pigHosts/pigHosts.excluded' and '<USER_FOLDER>/.pigHosts/pigHosts.urls'
 
 ```
 

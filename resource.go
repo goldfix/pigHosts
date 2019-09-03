@@ -1,16 +1,24 @@
 package pighosts
 
-import "time"
-import "os"
+import (
+	"os"
+	"runtime"
+	"time"
 
+	"github.com/briandowns/spinner"
+)
+
+var spinnerInd = spinner.New(spinner.CharSets[9], 100*time.Millisecond)
 var pigHostsUrls = ""
 var pigHostsExcluded = ""
-
-const numHostPerLine = 9
 
 const nonRoutable = "0.0.0.0"
 const localHostIP4 = "127.0.0.1"
 const localHostIP6 = "::1"
+const hostFileWin = "/Windows/System32/drivers/etc/hosts"
+const hostFileLinux = "/etc/hosts"
+const numHostPerLineWin = 9
+const numHostPerLineLinux = 1
 
 var filterSpecificHostDefault = []string{
 	"127.0.0.1 localhost",
@@ -58,8 +66,8 @@ var filterSpecificHostTmp = []string{}
 const headerHostFile = "###--pigHost_START------------------------------------"
 const footerHostFile = "###--pigHosts_END-------------------------------------"
 
-const hostFile = "/Windows/System32/drivers/etc/hosts"
-
+var hostFile = hostFileWin
+var numHostPerLine = numHostPerLineWin
 var hostFileNew = os.TempDir() + "/pigHostBak/host.new"
 var hostFileEmpty = os.TempDir() + "/pigHostBak/host.empty"
 var hostFileBak = os.TempDir() + "/pigHostBak/host_" + time.Now().Format("20060201T1504") + ".bak"
@@ -80,3 +88,10 @@ const manifest = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     </security>
 </trustInfo>
 </assembly>`
+
+func init() {
+	if runtime.GOOS != "windows" {
+		hostFile = hostFileLinux
+		numHostPerLine = numHostPerLineLinux
+	}
+}
