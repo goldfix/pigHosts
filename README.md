@@ -4,7 +4,6 @@
 - Add and remove blacklist hosts, from your hosts file.
 - Possibility to customize your download blacklist links.
 - Possibility to esclude specific hosts.
-- On Windows: optimized load hosts, more hosts per line.
 - Windows & Linux version.
 
 ### Use: 
