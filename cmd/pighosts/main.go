@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	pighosts "pigHosts"
 	"runtime/debug"
@@ -56,7 +55,6 @@ Command:
 	r, err := arguments.Bool("--help")
 	ChkErr(err)
 	if r {
-
 		docopt.PrintHelpAndExit(err, usage)
 		os.Exit(0)
 	}
@@ -97,11 +95,8 @@ Command:
 
 		os.Exit(0)
 	}
-	docopt.PrintHelpAndExit(err, usage)
 
-	err = fmt.Errorf("My Err: %v", "super error!")
-	ChkErr(err)
-
+	logrus.Info("Try to use: -h or --help for help online.\n")
 	os.Exit(0)
 }
 
