@@ -109,7 +109,7 @@ func prepareHostFile(hosts []string) error {
 	dir := path.Dir(hostFileNew)
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		err = nil
-		err = os.Mkdir(dir, os.ModeDir)
+		err = os.Mkdir(dir, os.ModePerm)
 		if err != nil {
 			return err
 		}
@@ -197,7 +197,7 @@ func backupHostFile(s string) (int64, error) {
 	dir := path.Dir(hostFileBak)
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		err = nil
-		err = os.Mkdir(dir, os.ModeDir)
+		err = os.Mkdir(dir, os.ModePerm)
 		if err != nil {
 			return 0, err
 		}

@@ -2,6 +2,7 @@ package pighosts
 
 import (
 	"reflect"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -107,6 +108,10 @@ func Test_splitHostPerLine(t *testing.T) {
 	type args struct {
 		hosts map[string]int
 	}
+	result := []int{10, 7}
+	if runtime.GOOS != "windows" {
+		result = []int{2, 2}
+	}
 	tests := []struct {
 		name string
 		args args
@@ -130,7 +135,7 @@ func Test_splitHostPerLine(t *testing.T) {
 				"1phads7.com":            2,
 				"test.test.io":           1},
 			},
-			[]int{10, 7},
+			result,
 		},
 	}
 	for _, tt := range tests {
