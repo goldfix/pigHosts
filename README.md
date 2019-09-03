@@ -67,4 +67,3 @@ Tools and libraries:
 - https://github.com/sirupsen/logrus
 - https://github.com/go-task/task
 - https://github.com/goreleaser/goreleaser
-...
