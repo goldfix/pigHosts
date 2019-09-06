@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	pighosts "pigHosts"
 	"runtime/debug"
@@ -25,23 +26,21 @@ func init() {
 }
 
 func main() {
+	debugInfo := false
 	homeFolder, err := os.UserHomeDir()
-	ChkErr(err)
+	chkErr(err, debugInfo)
 
 	usage := `
 pigHost
 
-Usage: pigHost [load | unload | force_init] [-h | -v | -o]
- pigHost (load)
- pigHost (unload)
- pigHost (force_init)
+Usage:
+ pigHost (load | unload | force_init) [--debug] | (--version)
  pigHost (--help | -h)
- pigHost (--version | -v)
 
 Options:
  -h, --help     help online
- -o, --other    other params
  -v, --version  view version
+ --debug  	view debug info
 
 Command:
  load           load custom hosts from external urls declared in the file: '` + homeFolder + `/.pigHosts/pigHosts.urls'
@@ -50,24 +49,30 @@ Command:
  `
 
 	arguments, err := docopt.ParseDoc(usage)
-	ChkErr(err)
+	chkErr(err, debugInfo)
 
-	r, err := arguments.Bool("--help")
-	ChkErr(err)
+	r, err := arguments.Bool("--debug")
+	chkErr(err, true)
+	if r {
+		debugInfo = true
+	}
+
+	r, err = arguments.Bool("--help")
+	chkErr(err, true)
 	if r {
 		docopt.PrintHelpAndExit(err, usage)
 		os.Exit(0)
 	}
 
 	r, err = arguments.Bool("--version")
-	ChkErr(err)
+	chkErr(err, true)
 	if r {
-		logrus.Infof("%v, commit %v, built at %v", version, commit, date)
+		logrus.Infof("Version : %v - Commit: %v - Built: %v", version, commit, date)
 		os.Exit(0)
 	}
 
 	r, err = arguments.Bool("force_init")
-	ChkErr(err)
+	chkErr(err, debugInfo)
 	if r {
 		pighosts.InitPigHosts(true)
 		logrus.Info("Configuration files reloaded.")
@@ -75,37 +80,41 @@ Command:
 	}
 
 	r, err = arguments.Bool("unload")
-	ChkErr(err)
+	chkErr(err, debugInfo)
 	if r {
 		logrus.Info("Start process...")
 		err := pighosts.UnloadHostsFile()
-		ChkErr(err)
+		chkErr(err, debugInfo)
 		logrus.Info("End process.")
 		os.Exit(0)
 	}
 
 	r, err = arguments.Bool("load")
-	ChkErr(err)
+	chkErr(err, debugInfo)
 	if r {
-
 		logrus.Info("Start process...")
 		err = pighosts.LoadHostsFile()
-		ChkErr(err)
+		chkErr(err, debugInfo)
 		logrus.Info("End process.")
-
 		os.Exit(0)
 	}
 
-	logrus.Info("Try to use: option -h or --help for help online.\n")
 	os.Exit(0)
 }
 
 // ChkErr check returned error
-func ChkErr(err error) {
+func chkErr(err error, debugInfo bool) {
 	if err != nil {
-		logrus.Error(err, "\n\n")
-		logrus.Errorf("Version : %v - Commit: %v - Built: %v", version, commit, date)
-		logrus.Errorf("Stack : %s", string(debug.Stack()))
+		fmt.Println("")
+		if debugInfo {
+			logrus.Error("----------------------------------------------------------------")
+		}
+		logrus.Error(err)
+		if debugInfo {
+			logrus.Error("----------------------------------------------------------------")
+			logrus.Errorf("Version : %v - Commit: %v - Built: %v", version, commit, date)
+			logrus.Errorf("Stack : %s", string(debug.Stack()))
+		}
 		os.Exit(1)
 	}
 }

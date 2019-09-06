@@ -15,7 +15,6 @@ import (
 
 func UnloadHostsFile() error {
 
-	spinnerInd.Restart()
 	//prepare a new empty version of host file
 	err := prepareHostFile(nil)
 	if err != nil {
@@ -30,7 +29,6 @@ func UnloadHostsFile() error {
 	if err != nil {
 		return err
 	}
-	spinnerInd.Stop()
 
 	return nil
 }

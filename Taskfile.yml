@@ -3,7 +3,7 @@
 version: '2'
 
 vars:
-  VER: 1
+  VER: 0.0.0
   TOOL: pigHosts
 
 env:
@@ -13,8 +13,12 @@ tasks:
   default:
     silent: true
     cmds:
-      - echo 'Tool -> {{.TOOL}}'
-      - task --list      
+      - echo 'Tool -> {{.TOOL}} - {{.VER}}'
+      - task --list
+  write-version:
+    desc: Write VERSION file.
+    cmds:
+      - echo {{.VER}}>./VERSION
   build-mod-vendor:
     desc: Download modules and force a build of project using vendor folder.
     deps: [mod-vendor]

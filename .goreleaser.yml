@@ -5,6 +5,7 @@ env:
   - GO111MODULE=on
 before:
   hooks:
+    # - task write-version VER={{ .ShortCommit }}
     - task mod-vendor
 builds:
   -
@@ -16,6 +17,9 @@ builds:
     goarch:
       - 386
       - amd64
+    hooks:
+      # pre: echo starting...
+      # post: task write-version VER={{ .Version }}
 archives:
   -
     id: "pigHosts"
@@ -35,7 +39,7 @@ checksum:
   name_template: 'checksums_md5.txt'
   algorithm: md5
 snapshot:
-  name_template: SNAPSHOT-{{ time "2006_01_02_T_15_04_05" }}-{{ .Commit }}
+  name_template: SNAPSHOT-{{ time "2006_01_02_T_15_04_05" }}-{{ .ShortCommit }}
 changelog:
   sort: asc
   filters:

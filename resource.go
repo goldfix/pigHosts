@@ -54,10 +54,10 @@ var filterSpecificHostDefault = []string{
 }
 
 var defaultHostsUrlsDefault = []string{
-	"# https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
-	"# https://www.squidblacklist.org/downloads/dg-ads.acl",
-	"# https://www.squidblacklist.org/downloads/dg-malicious.acl",
-	"https://someonewhocares.org/hosts/ipv6/hosts",
+	"https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
+	"https://www.squidblacklist.org/downloads/dg-ads.acl",
+	"https://www.squidblacklist.org/downloads/dg-malicious.acl",
+	"# https://someonewhocares.org/hosts/ipv6/hosts",
 }
 
 var defaultHostsUrlsTmp = []string{}

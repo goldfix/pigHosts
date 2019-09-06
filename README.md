@@ -12,17 +12,14 @@
 
 pigHost
 
-Usage: pigHost [load | unload | force_init] [-h | -v | -o]
- pigHost (load)
- pigHost (unload)
- pigHost (force_init)
+Usage:
+ pigHost (load | unload | force_init) [--debug] | (--version)
  pigHost (--help | -h)
- pigHost (--version | -v)
 
 Options:
  -h, --help     help online
- -o, --other    other params
  -v, --version  view version
+ --debug        view debug info
 
 Command:
  load           load custom hosts from external urls declared in the file: '<USER_FOLDER>/.pigHosts/pigHosts.urls'
@@ -40,7 +37,7 @@ When you started first time pigHost, will be created two configuration file:
 
 ### Important notes
 
-Some antivirus locks `.../etc/hosts` file. Remember to configure correctly you antivirus to do not lock this file.
+Some antivirus locks `.../etc/hosts` file. Remember to configure the antivirus correctly so not to block this file.
 
 - On Windows is necessary run `pigHosts` as _Administrator_.
 - On Linux is necessary run `pigHosts` with elevated privileges (`sudo pighost ...`).
