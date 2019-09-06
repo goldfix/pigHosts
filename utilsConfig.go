@@ -86,12 +86,12 @@ func InitPigHosts(force bool) error {
 	}
 
 	//at the first execution, makes a backup copy of hosts file
-	if _, err := os.Stat(hostFile + ".original"); os.IsNotExist(err) {
+	if _, err := os.Stat(homeFolder + "/hosts.original"); os.IsNotExist(err) {
 		b, err := ioutil.ReadFile(hostFile)
 		if err != nil {
 			return err
 		}
-		err = ioutil.WriteFile(hostFile+".original", b, os.ModeType)
+		err = ioutil.WriteFile(homeFolder+"/hosts.original", b, os.ModeType)
 		if err != nil {
 			return err
 		}

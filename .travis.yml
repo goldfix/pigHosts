@@ -1,0 +1,35 @@
+language: go
+sudo: true
+
+go:
+  - 1.12.7
+
+env:
+  - GO111MODULE=on
+
+before_install:
+  - sudo snap install goreleaser --classic
+  - sudo snap install task --classic
+
+install:
+  - task build-mod-vendor
+
+before_script:
+  - task go-test
+
+script:
+  - ./.travis/release.sh
+
+after_success:
+  - echo '-- process OK --'
+
+after_failure:
+  - echo '-- process ERROR --'
+
+after_script:
+  - echo '-- END --'
+
+notifications:
+  email:
+    on_success: never
+    on_failure: never
