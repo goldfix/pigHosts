@@ -185,7 +185,7 @@ func readHostFile() (string, error) {
 
 	b := make([]byte, startLine)
 	f.ReadAt(b, 0)
-	result = string(b)
+	result = strings.TrimSpace(string(b)) + "\n\n"
 
 	return result, nil
 }
