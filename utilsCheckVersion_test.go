@@ -17,7 +17,7 @@ func TestGetVersion(t *testing.T) {
 	resp, _ := client.Get("https://raw.githubusercontent.com/goldfix/pigHosts/master/VERSION")
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
-	result := strings.ReplaceAll(string(body), "v", "")
+	result := strings.TrimSpace(string(body))
 
 	type args struct {
 		currentVer string
