@@ -3,6 +3,7 @@ package pighosts
 import (
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -23,7 +24,7 @@ func GetVersion(currentVer string) (bool, string, error) {
 		return false, "nd", err
 	}
 
-	result := string(body)
+	result := strings.ReplaceAll(string(body), "v", "")
 	if string(result) != currentVer && currentVer != "dev" {
 		return true, string(result), nil
 	} else {
