@@ -34,13 +34,14 @@ func main() {
 pigHost
 
 Usage:
- pigHost (load | unload | force_init) [--debug] | (--version)
+ pigHost (load | unload | force_init) [--debug] | (--version) | (--check-update)
  pigHost (--help | -h)
 
 Options:
- -h, --help     help online
- -v, --version  view version
- --debug  	view debug info
+ -h, --help       help online
+ -v, --version    view version
+ --check-update   check if there is a new version
+ --debug          view debug info
 
 Command:
  load           load custom hosts from external urls declared in the file: '` + homeFolder + `/.pigHosts/pigHosts.urls'
@@ -55,6 +56,12 @@ Command:
 	chkErr(err, true)
 	if r {
 		debugInfo = true
+	}
+
+	r, err = arguments.Bool("--check-update")
+	chkErr(err, true)
+	if r {
+		os.Exit(checkVersion())
 	}
 
 	r, err = arguments.Bool("--help")
@@ -100,6 +107,20 @@ Command:
 	}
 
 	os.Exit(0)
+}
+
+func checkVersion() int {
+	upgrade, result, err := pighosts.GetVersion(version)
+	chkErr(err, true)
+	logrus.Infof("Current version : %v", version)
+	logrus.Infof("Latest version available : %v", result)
+	if upgrade {
+		logrus.Warningf("This version is not updated. Please, check here: https://github.com/goldfix/pigHosts/releases.")
+		return 1
+	} else {
+		logrus.Infof("This version is updated.")
+		return 0
+	}
 }
 
 // ChkErr check returned error

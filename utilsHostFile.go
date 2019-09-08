@@ -201,7 +201,7 @@ func backupHostFile(s string) (int64, error) {
 		}
 	}
 
-	f, err := os.OpenFile(hostFileBak, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModeType)
+	f, err := os.OpenFile(hostFileBak, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
 	if err != nil {
 		return 0, err
 	}

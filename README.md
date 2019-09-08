@@ -13,13 +13,14 @@
 pigHost
 
 Usage:
- pigHost (load | unload | force_init) [--debug] | (--version)
+ pigHost (load | unload | force_init) [--debug] | (--version) | (--check-update)
  pigHost (--help | -h)
 
 Options:
- -h, --help     help online
- -v, --version  view version
- --debug        view debug info
+ -h, --help       help online
+ -v, --version    view version
+ --check-update   check if there is a new version
+ --debug          view debug info
 
 Command:
  load           load custom hosts from external urls declared in the file: '<USER_FOLDER>/.pigHosts/pigHosts.urls'

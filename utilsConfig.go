@@ -91,7 +91,7 @@ func InitPigHosts(force bool) error {
 		if err != nil {
 			return err
 		}
-		err = ioutil.WriteFile(homeFolder+"/hosts.original", b, os.ModeType)
+		err = ioutil.WriteFile(homeFolder+"/hosts.original", b, 0664)
 		if err != nil {
 			return err
 		}
