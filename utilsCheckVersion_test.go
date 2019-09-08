@@ -3,6 +3,7 @@ package pighosts
 import (
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 )
@@ -16,6 +17,7 @@ func TestGetVersion(t *testing.T) {
 	resp, _ := client.Get("https://raw.githubusercontent.com/goldfix/pigHosts/master/VERSION")
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
+	result := strings.ReplaceAll(string(body), "v", "")
 
 	type args struct {
 		currentVer string
@@ -27,9 +29,9 @@ func TestGetVersion(t *testing.T) {
 		want1   string
 		wantErr bool
 	}{
-		{"TestGetVersion_1", args{"dev"}, false, string(body), false},
-		{"TestGetVersion_2", args{string(body)}, false, string(body), false},
-		{"TestGetVersion_3", args{"1.0"}, true, string(body), false},
+		{"TestGetVersion_1", args{"dev"}, false, result, false},
+		{"TestGetVersion_2", args{result}, false, result, false},
+		{"TestGetVersion_3", args{"1.0"}, true, result, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
