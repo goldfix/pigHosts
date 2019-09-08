@@ -24,8 +24,9 @@ func GetVersion(currentVer string) (bool, string, error) {
 		return false, "nd", err
 	}
 
-	result := strings.ReplaceAll(string(body), "v", "")
-	if string(result) != currentVer && currentVer != "dev" {
+	result := strings.TrimSpace(string(body))
+	currentVer = strings.TrimSpace(currentVer)
+	if result != currentVer && currentVer != "dev" && result != "nd" {
 		return true, string(result), nil
 	} else {
 		return false, string(result), nil
