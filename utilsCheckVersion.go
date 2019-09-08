@@ -26,9 +26,10 @@ func GetVersion(currentVer string) (bool, string, error) {
 
 	result := strings.TrimSpace(string(body))
 	currentVer = strings.TrimSpace(currentVer)
-	if result != currentVer && currentVer != "dev" && result != "nd" {
-		return true, string(result), nil
-	} else {
+
+	if currentVer == "dev" || result == "nd" || result == currentVer {
 		return false, string(result), nil
+	} else {
+		return true, string(result), nil
 	}
 }
