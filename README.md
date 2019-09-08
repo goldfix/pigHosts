@@ -1,12 +1,17 @@
+[![GitHub](https://img.shields.io/github/license/goldfix/pigHosts)](https://github.com/goldfix/pigHosts/blob/master/LICENSE)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/goldfix/pigHosts?sort=semver)](https://github.com/goldfix/pigHosts/releases)
+[![Travis (.com) branch](https://img.shields.io/travis/com/goldfix/pigHosts/master?label=master%20build)](https://travis-ci.com/goldfix/pigHosts)
+
 ## pigHosts
 
+- Latest version: [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/goldfix/pigHosts?sort=semver)](https://github.com/goldfix/pigHosts/releases)
 - Download blocklist hosts from remote sites.
 - Add and remove blocklist hosts, from your hosts file.
 - Possibility to customize your download blocklist links.
 - Possibility to esclude specific hosts.
 - Windows & Linux version.
 
-### Use: 
+### Use:
 
 ```
 
@@ -29,7 +34,7 @@ Command:
 
 ```
 
-### Configuration files: 
+### Configuration files:
 
 When you started first time pigHost, will be created two configuration file:
 
@@ -49,7 +54,7 @@ Some antivirus locks `.../etc/hosts` file. Remember to configure the antivirus c
 - Set your `GOPATH` environment variable.
 - In the `./src` folder, execute command: `task build-mod-vendor`.
 
-#### Thanks to: 
+#### Thanks to:
 
 Blocklist Collection sites:
 

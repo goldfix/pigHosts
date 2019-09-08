@@ -35,6 +35,8 @@ archives:
       amd64: x86_64
     files:
       - README.md
+      - LICENSE
+      - VERSION
 checksum:
   name_template: 'checksums_md5.txt'
   algorithm: md5
