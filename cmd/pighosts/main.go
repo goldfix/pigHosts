@@ -34,7 +34,7 @@ func main() {
 pigHost
 
 Usage:
- pigHost (load | unload | force_init) [--debug] | (--version) | (--check-update)
+ pigHost (load | unload | force_init | add ip host | del ip host) [--debug] | (--version) | (--check-update)
  pigHost (--help | -h)
 
 Options:
@@ -47,6 +47,8 @@ Command:
  load           load custom hosts from external urls declared in the file: '` + homeFolder + `/.pigHosts/pigHosts.urls'
  unload         disable and remove custom hosts
  force_init     delete and create a new set of configuration files: '` + homeFolder + `/.pigHosts/pigHosts.excluded' and '` + homeFolder + `/.pigHosts/pigHosts.urls'
+ add ip host    add single address in your host file
+ del ip host    remove single address from your host file
  `
 
 	arguments, err := docopt.ParseDoc(usage)
@@ -75,6 +77,22 @@ Command:
 	chkErr(err, true)
 	if r {
 		logrus.Infof("Version : %v - Commit: %v - Built: %v", version, commit, date)
+		os.Exit(0)
+	}
+
+	r, err = arguments.Bool("add")
+	chkErr(err, debugInfo)
+	if r {
+		logrus.Info("Add host...")
+		logrus.Info("End process.")
+		os.Exit(0)
+	}
+
+	r, err = arguments.Bool("del")
+	chkErr(err, debugInfo)
+	if r {
+		logrus.Info("Remove host...")
+		logrus.Info("End process.")
 		os.Exit(0)
 	}
 
