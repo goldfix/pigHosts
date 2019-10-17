@@ -42,7 +42,7 @@ func Test_prepareHostFile(t *testing.T) {
 }
 
 func Test_backupHostFile(t *testing.T) {
-	contentHostFile, _ := readHostFile()
+	contentHostFile, _ := readEmptyHostFile()
 	type args struct {
 		s string
 	}

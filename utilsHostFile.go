@@ -33,6 +33,16 @@ func UnloadHostsFile() error {
 	return nil
 }
 
+func AddSingleHost(ip string, host string) error {
+
+	return nil
+}
+
+func DelSingleHost(ip string, host string) error {
+
+	return nil
+}
+
 func LoadHostsFile() error {
 
 	logrus.Info("Download hosts list:")
@@ -123,7 +133,7 @@ func prepareHostFile(hosts []string) error {
 	}
 	defer f.Close()
 
-	origHost, err := readHostFile()
+	origHost, err := readEmptyHostFile()
 	if err != nil {
 		return err
 	}
@@ -155,7 +165,7 @@ func prepareHostFile(hosts []string) error {
 	return nil
 }
 
-func readHostFile() (string, error) {
+func readEmptyHostFile() (string, error) {
 
 	result := ""
 	f, err := os.OpenFile(hostFile, os.O_RDONLY, os.ModeType)

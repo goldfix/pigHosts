@@ -84,6 +84,11 @@ Command:
 	chkErr(err, debugInfo)
 	if r {
 		logrus.Info("Add host...")
+		ip, err := arguments.String("ip")
+		chkErr(err, debugInfo)
+		host, err := arguments.String("host")
+		chkErr(err, debugInfo)
+		pighosts.AddSingleHost(ip, host)
 		logrus.Info("End process.")
 		os.Exit(0)
 	}
@@ -92,6 +97,11 @@ Command:
 	chkErr(err, debugInfo)
 	if r {
 		logrus.Info("Remove host...")
+		ip, err := arguments.String("ip")
+		chkErr(err, debugInfo)
+		host, err := arguments.String("host")
+		chkErr(err, debugInfo)
+		pighosts.DelSingleHost(ip, host)
 		logrus.Info("End process.")
 		os.Exit(0)
 	}
