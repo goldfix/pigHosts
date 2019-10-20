@@ -13,13 +13,13 @@ func ReadFileConf() error {
 	if err != nil {
 		return err
 	}
-	defaultHostsUrlsTmp = strings.Split(strings.TrimSpace(string(f)), "\n")
+	defaultHostsUrlsTmp = strings.Split(strings.TrimSpace(string(f)), newLineLinux)
 
 	f, err = ioutil.ReadFile(pigHostsExcluded)
 	if err != nil {
 		return err
 	}
-	filterSpecificHostTmp = strings.Split(strings.TrimSpace(string(f)), "\n")
+	filterSpecificHostTmp = strings.Split(strings.TrimSpace(string(f)), newLineLinux)
 	return nil
 }
 
@@ -62,7 +62,7 @@ func InitPigHosts(force bool) error {
 		defer f1.Close()
 
 		for i := range defaultHostsUrlsDefault {
-			_, err := f1.WriteString(defaultHostsUrlsDefault[i] + "\n")
+			_, err := f1.WriteString(defaultHostsUrlsDefault[i] + newLineLinux)
 			if err != nil {
 				return err
 			}
@@ -78,7 +78,7 @@ func InitPigHosts(force bool) error {
 		defer f2.Close()
 
 		for i := range filterSpecificHostDefault {
-			_, err := f2.WriteString(filterSpecificHostDefault[i] + "\n")
+			_, err := f2.WriteString(filterSpecificHostDefault[i] + newLineLinux)
 			if err != nil {
 				return err
 			}

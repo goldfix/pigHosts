@@ -17,6 +17,8 @@ const localHostIP4 = "127.0.0.1"
 const localHostIP6 = "::1"
 const hostFileWin = "/Windows/System32/drivers/etc/hosts"
 const hostFileLinux = "/etc/hosts"
+const newLineWin = "\r\n"
+const newLineLinux = "\n"
 const numHostPerLineWin = 9
 const numHostPerLineLinux = 1
 
@@ -67,6 +69,7 @@ const headerHostFile = "###--pigHost_START------------------------------------"
 const footerHostFile = "###--pigHosts_END-------------------------------------"
 
 var hostFile = hostFileWin
+var newLine = newLineWin
 var numHostPerLine = numHostPerLineWin
 var hostFileNew = os.TempDir() + "/pigHostBak/host.new"
 var hostFileEmpty = os.TempDir() + "/pigHostBak/host.empty"
@@ -93,5 +96,6 @@ func init() {
 	if runtime.GOOS != "windows" {
 		hostFile = hostFileLinux
 		numHostPerLine = numHostPerLineLinux
+		newLine = newLineLinux
 	}
 }
