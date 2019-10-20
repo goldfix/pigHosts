@@ -66,6 +66,7 @@ var defaultHostsUrlsTmp = []string{}
 var filterSpecificHostTmp = []string{}
 
 const headerHostFile = "###--pigHost_START------------------------------------"
+const singleHostAdded = "###--pigHost_Single_Host------------------------------"
 const footerHostFile = "###--pigHosts_END-------------------------------------"
 
 var hostFile = hostFileWin

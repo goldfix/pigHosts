@@ -35,10 +35,53 @@ func UnloadHostsFile() error {
 
 func AddSingleHost(ip string, host string) error {
 
+	startPos := 0
+	tmp := ""
+
+	// posHeaderHostFile, existHeaderHostFile, err := getRowByContent(headerHostFile)
+	// if err != nil {
+	// 	return err
+	// }
+
+	posSingleHostAdded, existSingleHostAdded, err := getRowByContent(singleHostAdded)
+	if err != nil {
+		return err
+	}
+
+	startPos = posSingleHostAdded
+
+	if existSingleHostAdded {
+		startPos = posSingleHostAdded + len(singleHostAdded)
+	} else {
+		tmp += newLine + singleHostAdded + newLine
+	}
+
+	f, err := os.OpenFile(hostFile, os.O_RDWR, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	tmp += newLine + ip + " " + host + newLine
+
+	f.WriteAt([]byte(tmp), int64(startPos))
+	f.Sync()
+
 	return nil
 }
 
 func DelSingleHost(ip string, host string) error {
+
+	f, err := os.OpenFile(hostFile, os.O_WRONLY, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	i, exists, err := getRowByContent(ip + " " + host)
+	if exists {
+		f.WriteAt([]byte(nil), int64(i))
+	}
+	f.Sync()
 
 	return nil
 }
@@ -165,17 +208,19 @@ func prepareHostFile(hosts []string) error {
 	return nil
 }
 
-func getRowByContent(cnt string) (int, error) {
+func getRowByContent(cnt string) (int, bool, error) {
+	bytesRead := 0
+	startLine := 0
+	exist := false
+
 	f, err := os.OpenFile(hostFile, os.O_RDONLY, os.ModeType)
 	if err != nil {
-		return -1, err
+		return -1, exist, err
 	}
 	defer f.Close()
 
 	scanner := bufio.NewScanner(f)
 	scanner.Split(bufio.ScanBytes)
-	bytesRead := 0
-	startLine := 0
 
 	for scanner.Scan() {
 		z := string(scanner.Bytes())
@@ -185,6 +230,7 @@ func getRowByContent(cnt string) (int, error) {
 			s := string(line)
 			if strings.Index(s, cnt) > -1 {
 				bytesRead = startLine
+				exist = true
 				break
 			}
 			startLine = bytesRead + 1
@@ -192,7 +238,7 @@ func getRowByContent(cnt string) (int, error) {
 		}
 		bytesRead++
 	}
-	return bytesRead, nil
+	return bytesRead, exist, nil
 }
 
 func readEmptyHostFile() (string, error) {
@@ -204,7 +250,7 @@ func readEmptyHostFile() (string, error) {
 	}
 	defer f.Close()
 
-	startLine, err := getRowByContent(headerHostFile)
+	startLine, _, err := getRowByContent(headerHostFile)
 	if err != nil {
 		return "", err
 	}

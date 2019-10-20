@@ -149,13 +149,65 @@ func Test_getRowByContent(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := getRowByContent(tt.args.cnt)
+			got, _, err := getRowByContent(tt.args.cnt)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("getRowByContent() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if got <= tt.want {
 				t.Errorf("getRowByContent() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestAddSingleHost(t *testing.T) {
+	return
+	type args struct {
+		ip   string
+		host string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			"TestAddSingleHost_01",
+			args{host: "local.local", ip: "0.0.0.0"},
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := AddSingleHost(tt.args.ip, tt.args.host); (err != nil) != tt.wantErr {
+				t.Errorf("AddSingleHost() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestDelSingleHost(t *testing.T) {
+	return
+	type args struct {
+		ip   string
+		host string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			"TestDelSingleHost_01",
+			args{host: "local.local", ip: "0.0.0.0"},
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := DelSingleHost(tt.args.ip, tt.args.host); (err != nil) != tt.wantErr {
+				t.Errorf("DelSingleHost() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
