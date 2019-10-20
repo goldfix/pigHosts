@@ -101,18 +101,18 @@ func downlaodRemoteList(url string) ([]string, error) {
 	}
 
 	f := func(c rune) bool {
-		return c == '\n'
+		return c == []rune(newLineLinux)[0]
 	}
 
-	r := strings.FieldsFunc(strings.ReplaceAll(string(b), "\r\n", "\n"), f)
+	r := strings.FieldsFunc(strings.ReplaceAll(string(b), newLineWin, newLineLinux), f)
 
 	return r, nil
 }
 
 func prepareHostFile(hosts []string) error {
 
-	header := "\n\n" + headerHostFile
-	footer := "\n\n" + footerHostFile + "\n\n"
+	header := newLine + headerHostFile
+	footer := newLine + footerHostFile + newLine
 
 	dir := path.Dir(hostFileNew)
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
@@ -144,12 +144,12 @@ func prepareHostFile(hosts []string) error {
 
 	if hosts != nil {
 
-		_, err = f.WriteString(header + "\n# Last Update: " + time.Now().Format("2006-02-01 15:04") + "\n\n")
+		_, err = f.WriteString(header + newLine + "# Last Update: " + time.Now().Format("2006-02-01 15:04") + newLine)
 		if err != nil {
 			return err
 		}
 		for _, k := range hosts {
-			_, err := f.WriteString(k + "\n")
+			_, err := f.WriteString(k + newLine)
 			if err != nil {
 				return err
 			}
@@ -165,12 +165,10 @@ func prepareHostFile(hosts []string) error {
 	return nil
 }
 
-func readEmptyHostFile() (string, error) {
-
-	result := ""
+func getRowByContent(cnt string) (int, error) {
 	f, err := os.OpenFile(hostFile, os.O_RDONLY, os.ModeType)
 	if err != nil {
-		return "", err
+		return -1, err
 	}
 	defer f.Close()
 
@@ -181,21 +179,39 @@ func readEmptyHostFile() (string, error) {
 
 	for scanner.Scan() {
 		z := string(scanner.Bytes())
-		if z == "\n" || z == "\r" {
+		if z == newLineWin || z == newLineLinux {
 			line := make([]byte, bytesRead-startLine)
 			f.ReadAt(line, int64(startLine))
 			s := string(line)
-			if strings.Index(s, headerHostFile) > -1 {
+			if strings.Index(s, cnt) > -1 {
+				bytesRead = startLine
 				break
 			}
 			startLine = bytesRead + 1
+
 		}
 		bytesRead++
+	}
+	return bytesRead, nil
+}
+
+func readEmptyHostFile() (string, error) {
+
+	result := ""
+	f, err := os.OpenFile(hostFile, os.O_RDONLY, os.ModeType)
+	if err != nil {
+		return "", err
+	}
+	defer f.Close()
+
+	startLine, err := getRowByContent(headerHostFile)
+	if err != nil {
+		return "", err
 	}
 
 	b := make([]byte, startLine)
 	f.ReadAt(b, 0)
-	result = strings.TrimSpace(string(b)) + "\n\n"
+	result = strings.TrimSpace(string(b)) + newLine
 
 	return result, nil
 }

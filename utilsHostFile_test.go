@@ -98,6 +98,7 @@ func TestInitPigHosts(t *testing.T) {
 }
 
 func Test_downlaodRemoteList(t *testing.T) {
+
 	type args struct {
 		s string
 	}
@@ -108,8 +109,12 @@ func Test_downlaodRemoteList(t *testing.T) {
 		wantErr bool
 	}{
 
-		{"Test_downlaodRemoteList_1", args{s: "https://drive.google.com/uc?authuser=0&id=1BfGJJLtimhoOi9Sm3jYLF6d8XtYBJ5KY&export=download"},
-			[]string{"127.0.0.1 localhost", "127.0.0.1 localhost.localdomain", "# TEST #  ", "127.0.0.1 local", "255.255.255.255 broadcasthost", "     test.test.io     "}, false},
+		{
+			"Test_downlaodRemoteList_1",
+			args{s: "https://drive.google.com/uc?authuser=0&id=1BfGJJLtimhoOi9Sm3jYLF6d8XtYBJ5KY&export=download"},
+			[]string{"127.0.0.1 localhost", "127.0.0.1 localhost.localdomain", "# TEST #  ", "127.0.0.1 local", "255.255.255.255 broadcasthost", "     test.test.io     "},
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -120,6 +125,37 @@ func Test_downlaodRemoteList(t *testing.T) {
 			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("downlaodRemoteList() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_getRowByContent(t *testing.T) {
+	type args struct {
+		cnt string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    int
+		wantErr bool
+	}{
+		{
+			"Test_getRowByContent_01",
+			args{cnt: headerHostFile},
+			100,
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := getRowByContent(tt.args.cnt)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("getRowByContent() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if got <= tt.want {
+				t.Errorf("getRowByContent() = %v, want %v", got, tt.want)
 			}
 		})
 	}
