@@ -6,6 +6,8 @@
     "configurations": [
 
 
+
+
         {
             "name": "Launch file",
             "type": "go",
@@ -39,12 +41,12 @@
         {
             "mode": "auto",
             "trace": "verbose",
-            "name": "Launch-Load",
+            "name": "Launch-Test-Param",
             "type": "go",
             "request": "launch",
-            "program": "${fileDirname}",
+            "program": "${file}",
             "env": {"GO111MODULE":"on"},
-            "args": ["load",]
+            "args": ["add","0.0.0.0","local.local"]
         }
     ]
 }
