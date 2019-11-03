@@ -34,7 +34,7 @@ func main() {
 pigHost
 
 Usage:
- pigHost (load | unload | force_init | add ip host | del ip host) [--debug] | (--version) | (--check-update)
+ pigHost (load | unload | force_init | add <ip> <host> | del <ip> <host>) [--debug] | (--version) | (--check-update)
  pigHost (--help | -h)
 
 Options:
@@ -44,11 +44,11 @@ Options:
  --debug          view debug info
 
 Command:
- load           load custom hosts from external urls declared in the file: '` + homeFolder + `/.pigHosts/pigHosts.urls'
- unload         disable and remove custom hosts
- force_init     delete and create a new set of configuration files: '` + homeFolder + `/.pigHosts/pigHosts.excluded' and '` + homeFolder + `/.pigHosts/pigHosts.urls'
- add ip host    add single address in your host file
- del ip host    remove single address from your host file
+ load             load custom hosts from external urls declared in the file: '` + homeFolder + `/.pigHosts/pigHosts.urls'
+ unload           disable and remove custom hosts
+ force_init       delete and create a new set of configuration files: '` + homeFolder + `/.pigHosts/pigHosts.excluded' and '` + homeFolder + `/.pigHosts/pigHosts.urls'
+ add <ip> <host>  add single address in your host file
+ del <ip> <host>  remove single address from your host file
  `
 
 	arguments, err := docopt.ParseDoc(usage)
@@ -84,9 +84,9 @@ Command:
 	chkErr(err, debugInfo)
 	if r {
 		logrus.Info("Add host...")
-		ip, err := arguments.String("ip")
+		ip, err := arguments.String("<ip>")
 		chkErr(err, debugInfo)
-		host, err := arguments.String("host")
+		host, err := arguments.String("<host>")
 		chkErr(err, debugInfo)
 		pighosts.AddSingleHost(ip, host)
 		logrus.Info("End process.")
@@ -97,9 +97,9 @@ Command:
 	chkErr(err, debugInfo)
 	if r {
 		logrus.Info("Remove host...")
-		ip, err := arguments.String("ip")
+		ip, err := arguments.String("<ip>")
 		chkErr(err, debugInfo)
-		host, err := arguments.String("host")
+		host, err := arguments.String("<host>")
 		chkErr(err, debugInfo)
 		pighosts.DelSingleHost(ip, host)
 		logrus.Info("End process.")

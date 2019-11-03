@@ -13,22 +13,104 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+func getSection(start string, end string) (int, int, error) {
+
+	iStart, _, err := getRowByContent(start)
+	if err != nil {
+		return 0, 0, err
+	}
+	iEnd, _, err := getRowByContent(end)
+	if err != nil {
+		return 0, 0, err
+	}
+
+	return iStart - len(start), iEnd, nil
+
+}
+
+func getRowByContent(cnt string) (int, bool, error) {
+	bytesRead := 0
+	startLine := 0
+	exist := false
+
+	f, err := os.OpenFile(hostFile, os.O_RDONLY, os.ModeType)
+	if err != nil {
+		return -1, exist, err
+	}
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	scanner.Split(bufio.ScanBytes)
+
+	for scanner.Scan() {
+		z := string(scanner.Bytes())
+		if z == newLineWin || z == newLineLinux {
+			line := make([]byte, bytesRead-startLine)
+			f.ReadAt(line, int64(startLine))
+			s := string(line)
+			if strings.Index(s, cnt) > -1 {
+				bytesRead = startLine
+				exist = true
+				break
+			}
+			startLine = bytesRead + 1
+
+		}
+		bytesRead++
+	}
+	return bytesRead, exist, nil
+}
+
 func UnloadHostsFile() error {
 
-	//prepare a new empty version of host file
-	err := prepareHostFile(nil)
+	iStart, startExist, err := getRowByContent(headerHostFile)
+	if err != nil {
+		return err
+	}
+	iEnd, endExist, err := getRowByContent(footerHostFile)
 	if err != nil {
 		return err
 	}
 
-	f, err := ioutil.ReadFile(hostFileEmpty)
+	if startExist {
+
+	}
+
+	if endExist {
+		iEnd = iEnd + len(footerHostFile)
+	}
+
+	fi, err := os.Stat(hostFile)
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(hostFile, f, os.ModeType)
+
+	f, err := os.OpenFile(hostFile, os.O_RDWR, os.ModeType)
 	if err != nil {
 		return err
 	}
+	defer f.Close()
+
+	tmp := make([]byte, iStart)
+	_, err = f.ReadAt(tmp, 0)
+	if err != nil {
+		return err
+	}
+	result := string(tmp)
+
+	tmp = make([]byte, fi.Size()-int64(iEnd))
+	_, err = f.ReadAt(tmp, int64(iEnd))
+	if err != nil {
+		return err
+	}
+	result = result + string(tmp)
+
+	f.Truncate(0)
+	_, err = f.WriteString(result)
+	if err != nil {
+		return err
+	}
+	f.Sync()
 
 	return nil
 }
@@ -43,7 +125,7 @@ func AddSingleHost(ip string, host string) error {
 	// 	return err
 	// }
 
-	posSingleHostAdded, existSingleHostAdded, err := getRowByContent(singleHostAdded)
+	posSingleHostAdded, existSingleHostAdded, err := getRowByContent(headerSingleHostAdded)
 	if err != nil {
 		return err
 	}
@@ -51,9 +133,9 @@ func AddSingleHost(ip string, host string) error {
 	startPos = posSingleHostAdded
 
 	if existSingleHostAdded {
-		startPos = posSingleHostAdded + len(singleHostAdded)
+		startPos = posSingleHostAdded + len(headerSingleHostAdded)
 	} else {
-		tmp += newLine + singleHostAdded + newLine
+		tmp += newLine + headerSingleHostAdded + newLine
 	}
 
 	f, err := os.OpenFile(hostFile, os.O_RDWR, os.ModePerm)
@@ -206,39 +288,6 @@ func prepareHostFile(hosts []string) error {
 	f.Sync()
 
 	return nil
-}
-
-func getRowByContent(cnt string) (int, bool, error) {
-	bytesRead := 0
-	startLine := 0
-	exist := false
-
-	f, err := os.OpenFile(hostFile, os.O_RDONLY, os.ModeType)
-	if err != nil {
-		return -1, exist, err
-	}
-	defer f.Close()
-
-	scanner := bufio.NewScanner(f)
-	scanner.Split(bufio.ScanBytes)
-
-	for scanner.Scan() {
-		z := string(scanner.Bytes())
-		if z == newLineWin || z == newLineLinux {
-			line := make([]byte, bytesRead-startLine)
-			f.ReadAt(line, int64(startLine))
-			s := string(line)
-			if strings.Index(s, cnt) > -1 {
-				bytesRead = startLine
-				exist = true
-				break
-			}
-			startLine = bytesRead + 1
-
-		}
-		bytesRead++
-	}
-	return bytesRead, exist, nil
 }
 
 func readEmptyHostFile() (string, error) {

@@ -212,3 +212,22 @@ func TestDelSingleHost(t *testing.T) {
 		})
 	}
 }
+
+func TestUnloadHostsFile(t *testing.T) {
+	tests := []struct {
+		name    string
+		wantErr bool
+	}{
+		{
+			"TestUnloadHostsFile_01",
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := UnloadHostsFile(); (err != nil) != tt.wantErr {
+				t.Errorf("UnloadHostsFile() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
